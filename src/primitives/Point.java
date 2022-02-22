@@ -3,11 +3,11 @@ package primitives;
 import java.util.Objects;
 
 public class Point {
-    Double3 x;
-    Double3 y;
-    Double3 z;
+    final Double3 x;
+    final Double3 y;
+    final Double3 z;
 
-    public Point(Double3 x, Double3 y, Double3 z) {
+    public Point(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -23,6 +23,9 @@ public class Point {
     //    return z;
     //}
 
+    public  subtract(Point p){
+        Vector toReturn = new Vector(p.x - this.x, p.y - this.y, p.z - this.z);
+    }
 
     @Override
     public String toString() {
@@ -30,7 +33,7 @@ public class Point {
                 "(" +
                 "x=" + x +
                 ", y=" + y +
-                ", z=" + z + "0";
+                ", z=" + z + ")";
     }
 
     @Override
@@ -42,8 +45,4 @@ public class Point {
         return this.x.equals(other.x) && this.y.equals(other.y) && this.z.equals(other.z);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(x, y, z);
-    }
 }
