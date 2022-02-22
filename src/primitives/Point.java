@@ -3,14 +3,11 @@ package primitives;
 import java.util.Objects;
 
 public class Point {
-    final Double3 x;
-    final Double3 y;
-    final Double3 z;
+
+    final Double3 point;
 
     public Point(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.point = new Double3(x,y,z);
     }
 
     //public Double3 getX() {
@@ -23,8 +20,16 @@ public class Point {
     //    return z;
     //}
 
-    public  subtract(Point p){
-        Vector toReturn = new Vector(p.x - this.x, p.y - this.y, p.z - this.z);
+    public Vector subtract(Point another){
+        return new Vector(another.point.d1 - this.point.d1, another.point.d2 - this.point.d2, another.point.d3 - this.point.d3);
+    }
+
+    public Point Add(Vector v){
+        return new Point(this.point.d1 + v.point.d1, this.point.d2 + v.point.d2, this.point.d3 + v.point.d3);
+    }
+
+    public double DistanceSquared(Point p){
+
     }
 
     @Override
