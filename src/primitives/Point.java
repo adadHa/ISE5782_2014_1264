@@ -9,6 +9,9 @@ public class Point {
     public Point(double x, double y, double z) {
         this.xyz = new Double3(x,y,z);
     }
+    public Point(Double3 p){
+        this.xyz = p;
+    }
 
     //public Double3 getX() {
     //    return x;
