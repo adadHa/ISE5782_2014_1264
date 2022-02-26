@@ -2,7 +2,7 @@ package geometries;
 
 import primitives.*;
 
-public class Plane {
+public class Plane implements Geometry {
     Point p0;
     Vector normal;
 
@@ -21,10 +21,19 @@ public class Plane {
     }
     public Vector getNormal() {
         return normal;
+    } // clear?
+
+
+    @Override
+    public String toString() {
+        return " the Plane:" +
+                "point is" + p0 +
+                ", normal vector is" + normal +
+                '.';
     }
 
     @Override
-    public Vector getNormal(){
+    public Vector getNormal(Point p){
         return null;
     }
 }

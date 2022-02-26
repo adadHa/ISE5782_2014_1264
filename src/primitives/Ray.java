@@ -23,10 +23,10 @@ public class Ray {
 
     @Override
     public String toString() {
-        return "Ray {" +
-                "point =" + p0.toString() +
-                ", dir =" + dir.toString() +
-                '}';
+        return " the Ray: " +
+                "point is" + p0.toString() +
+                ", direction vector is " + dir.toString() +
+                '.';
     }
 
     @Override
