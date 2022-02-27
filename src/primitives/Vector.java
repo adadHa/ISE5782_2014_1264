@@ -2,10 +2,15 @@ package primitives;
 
 public class Vector extends Point{
 
-    public Vector(Double3 x, Double3 y, Double3 z) {
+    public Vector(double x, double y, double z) {
         super(x, y, z);
     }
-
+    public Vector(Double3 v) {
+        if (v.equals((obj)Double3.ZERO)){
+            //throw Ill
+        }
+        super(v.d1, v.d2, v.d3);
+    }
     public Vector add(Vector another) {
         return new Vector(this.x.add(another.x),this.y.add(another.y),this.z.add(another.z));
     }
