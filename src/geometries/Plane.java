@@ -8,7 +8,12 @@ public class Plane implements Geometry {
 
     public Plane(Point p0, Vector normal) {
         this.p0 = p0;
-        this.normal = normal;
+        if(normal.length() == 1){//todo: change to lengthSquared? (smaller run time without sqrt) here and ray
+            this.normal = normal;
+        }
+        else{
+            this.normal = normal.normalize();
+        }
     }
     public Plane(Point p0, Point p1, Point p2) {
         this.p0 = p0;

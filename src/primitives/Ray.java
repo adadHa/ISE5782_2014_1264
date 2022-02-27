@@ -3,8 +3,8 @@ package primitives;
 import java.util.Objects;
 
 public class Ray {
-    Point p0;
-    Vector dir;
+    final Point p0;
+    final Vector dir;
 
     public Ray(Point p, Vector v) {
         this.p0 = p;
@@ -24,8 +24,8 @@ public class Ray {
     @Override
     public String toString() {
         return " the Ray: " +
-                "point is" + p0.toString() +
-                ", direction vector is " + dir.toString() +
+                "point is:" + p0.toString() +
+                ", direction vector is: " + dir.toString() +
                 '.';
     }
 

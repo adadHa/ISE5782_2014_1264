@@ -4,8 +4,8 @@ import primitives.*;
 
 public class Sphere implements Geometry{
 
-    public Point center;
-    public double radius;
+    final Point center;
+    final double radius;
 
     public Point getCenter() {
         return center;
