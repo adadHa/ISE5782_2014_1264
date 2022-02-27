@@ -5,13 +5,13 @@ public class Vector extends Point{
     public Vector(double x, double y, double z) {
         super(x, y, z);
         if (xyz.equals(Double3.ZERO)){
-            throw new IllegalArgumentException("Vector 0!");
+            throw new IllegalArgumentException();
         }
     }
     public Vector(Double3 v) {
         super(v);
         if (xyz.equals(Double3.ZERO)){
-            throw new IllegalArgumentException("Vector 0!");
+            throw new IllegalArgumentException();
         }
     }
     public Vector add(Vector another) {
