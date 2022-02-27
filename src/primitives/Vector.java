@@ -26,8 +26,9 @@ public class Vector extends Point{
         return new Vector(this.xyz.scale(k));
     }
 
-    public double dotProduct(Vector a){
-        //return new Vector(this.xyz.product())
+    public double dotProduct(Vector v){
+        Double3 p = xyz.product(v.xyz);
+        return  p.d1 + p.d2 + p.d3;
     }
 
     public Vector crossProduct(Vector b){
@@ -37,7 +38,7 @@ public class Vector extends Point{
     }
 
     public double lengthSquared(){
-        return dotProduct(this);
+        return xyz.d1*xyz.d1 + xyz.d2*xyz.d2 + xyz.d3*xyz.d3;
     }
 
     public  double length(){
