@@ -4,42 +4,49 @@ public class Vector extends Point{
 
     public Vector(double x, double y, double z) {
         super(x, y, z);
+        if (xyz.equals(Double3.ZERO)){
+            throw new IllegalArgumentException("Vector 0!");
+        }
     }
     public Vector(Double3 v) {
-        if (v.equals((obj)Double3.ZERO)){
-            //throw Ill
+        super(v);
+        if (xyz.equals(Double3.ZERO)){
+            throw new IllegalArgumentException("Vector 0!");
         }
-        super(v.d1, v.d2, v.d3);
     }
     public Vector add(Vector another) {
-        return new Vector(this.x.add(another.x),this.y.add(another.y),this.z.add(another.z));
+        return new Vector(this.xyz.add(another.xyz));
     }
 
     public Vector subtract(Vector another) {
-        return new Vector(this.x.subtract(another.x),this.y.subtract(another.y),this.z.subtract(another.z));
+        return new Vector(this.xyz.subtract(another.xyz));
     }
 
     public Vector scale(double k){
-        return new Vector(this.x.scale(k),this.y.scale(k),this.z.scale(k));
-    }
-
-    public Vector crossProduct(Vector a){
-        return new Vector(this.x.scale(k),this.y.scale(k),this.z.scale(k));
-    }
-
-    public double lengthSquared(){
-
-    }
-
-    public  double length(){
-
-    }
-
-    public  Vector normalize(){
-
+        return new Vector(this.xyz.scale(k));
     }
 
     public double dotProduct(Vector a){
-
+        //return new Vector(this.xyz.product())
     }
+
+    public Vector crossProduct(Vector b){
+        return new Vector(this.y.product(b.z).subtract(this.z.product(b.y)),    //X = this.y*b.z - this.z*b.y
+                this.z.product(b.x).subtract(this.x.product(b.z)),    //Y = this.z*b.x - this.x*b.z
+                this.x.product(b.y).subtract(this.y.product(b.x)));   //Z = this.z*b.y - this.y*b.x
+    }
+
+    public double lengthSquared(){
+        return dotProduct(this);
+    }
+
+    public  double length(){
+        return Math.sqrt(this.lengthSquared());
+    }
+
+    public  Vector normalize(){
+        return new Vector(xyz.reduce(length()));
+    }
+
+
 }
