@@ -24,7 +24,7 @@ public class Point {
     //}
 
     public Vector subtract(Point another) {
-        return new Vector(another.xyz.d1 - this.xyz.d1, another.xyz.d2 - this.xyz.d2, another.xyz.d3 - this.xyz.d3);
+        return new Vector(this.xyz.d1 - another.xyz.d1, this.xyz.d2 - another.xyz.d2, this.xyz.d3 - another.xyz.d3);
     }
 
     public Point add(Vector v) {
