@@ -126,7 +126,7 @@ class VectorTest {
         // TC01 - vertical
         assertEquals(v1.dotProduct(new Vector(-1,-2,5)),
                 0,
-                "Vector.dotProduct() return wrong value for TC01 - vertical");
+                "Vector.dotProduct() return wrong value for TC01 - orthogonal vectors (value is not zero)");
         // TC02 - same direction
         assertEquals(v1.dotProduct(new Vector(2,4,2)),
                 12,
@@ -193,6 +193,14 @@ class VectorTest {
 
         // ============ Equivalence Partitions Tests ==============
         //simple case
-        assertEquals(v1.normalize().length(), new Vector(2/3f,2/3f,1/3f).length(),0.00001, "Vector.normalize() return wrong value for simple case");
+        assertEquals(v1.normalize().length(),
+                new Vector(2/3f,2/3f,1/3f).length(),
+                0.00001,
+                "Vector.normalize() return wrong value for simple case");
+
+        // =============== Boundary Values Tests ==================
+        assertThrows( IllegalArgumentException.class,
+                () -> new Vector(0,0,0).normalize(),
+                "Vector.subtract() not throws exception for vector 0");
     }
 }
