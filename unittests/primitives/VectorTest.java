@@ -7,6 +7,7 @@ package primitives;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static primitives.Util.isZero;
 
 
@@ -155,26 +156,43 @@ class VectorTest {
         // TC03: Test acute angle case
         assertEquals(v1.crossProduct(new Vector(1,2,2)),
                 new Vector(-2,1,0),
-                (Double)0.00001,
+                "crossProduct() wrong result for TC03: Test acute angle case");
+
+        // TC04: Test acute angle case
+        assertEquals(v1.crossProduct(new Vector(1,2,2)),
+                new Vector(-2,1,0),
                 "crossProduct() wrong result for TC03: Test acute angle case");
 
         // =============== Boundary Values Tests ==================
         // TC11: test zero vector from cross-product of co-lined vectors
         Vector v3 = new Vector(-2, -4, -6);
         assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v3), "crossProduct() for parallel vectors does not throw an exception");
-
-
     }
 
     @Test
     void lengthSquared() {
+        Vector v1 = new Vector(2, 2, 1);
+
+        // ============ Equivalence Partitions Tests ==============
+        //simple case
+        assertEquals(v1.lengthSquared(), 9, "Vector.lengthSquared() return wrong value for simple case");
     }
 
     @Test
     void length() {
+        Vector v1 = new Vector(2, 2, 1);
+
+        // ============ Equivalence Partitions Tests ==============
+        //simple case
+        assertEquals(v1.lengthSquared(), 9, "Vector.length() return wrong value for simple case");
     }
 
     @Test
     void normalize() {
+        Vector v1 = new Vector(2, 2, 1);
+
+        // ============ Equivalence Partitions Tests ==============
+        //simple case
+        assertEquals(v1.normalize().length(), new Vector(2/3f,2/3f,1/3f).length(),0.00001, "Vector.normalize() return wrong value for simple case");
     }
 }
