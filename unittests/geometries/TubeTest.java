@@ -13,11 +13,22 @@ class TubeTest {
      */
     @Test
     void getNormal() {
-        Point p = new Point(0,1,0);
+        // ============ Equivalence Partitions Tests ==============
+        // TC01 - simple case
+        Point p = new Point(0.5,0,1);
         Tube x = new Tube(
                 new Ray(new Point(0,0,0), new Vector(1,0,0)),
                 1
                 );
+        assertEquals( new Vector(0,0,1), x.getNormal(p));
+
+        // =============== Boundary Values Tests ==================
+        // TC10: vector pp0 is orthogonal to v
+        p = new Point(0,1,0);
+        x = new Tube(
+                new Ray(new Point(0,0,0), new Vector(1,0,0)),
+                1
+        );
         assertEquals( new Vector(0,1,0), x.getNormal(p));
     }
 }

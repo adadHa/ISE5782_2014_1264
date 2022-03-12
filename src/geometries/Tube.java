@@ -26,11 +26,14 @@ public class Tube implements Geometry {
         Point p0 = axisRay.getP0();
         double t = v.dotProduct(p.subtract(p0));
         Point o = null;
+        Vector n = null;
         if(t != 0)
-            o = p0.add(v.scale(t));
+        {
+             o = p0.add(v.scale(t));
+             n = p.subtract(o).normalize();
+        }
         else
-            o = p0.add(v);
-        Vector n = p.subtract(o).normalize();
+            n = p.subtract(p0);
         return n;
     }
 }
