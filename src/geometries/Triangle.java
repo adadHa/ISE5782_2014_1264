@@ -19,6 +19,7 @@ public class Triangle extends Polygon {
         int i = 1;
         for(Point p : vertices){
             toReturn += "point " + i + ": " + p.toString();
+            i++;
         }
         toReturn += ".";
         return toReturn;

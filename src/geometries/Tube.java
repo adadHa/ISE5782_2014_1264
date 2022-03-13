@@ -3,6 +3,9 @@ package geometries;
 import primitives.Point;
 import primitives.Vector;
 import primitives.Ray;
+
+import java.util.List;
+
 public class Tube implements Geometry {
     private final Ray axisRay;
     private final double radius;
@@ -35,5 +38,10 @@ public class Tube implements Geometry {
         else
             n = p.subtract(p0);
         return n;
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        return null;
     }
 }
