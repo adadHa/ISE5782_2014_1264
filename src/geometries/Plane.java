@@ -10,8 +10,6 @@ public class Plane implements Geometry {
 
     public Plane(Point p0, Point p1, Point p2) {
         this.p0 = p0;
-        this.normal = null; //temp, will be change
-
         // check for co-located vertices
         if (p0.equals(p1) || p1.equals(p2) || p0.equals(p2))
             throw new IllegalArgumentException("co-operated vertices");
@@ -23,7 +21,7 @@ public class Plane implements Geometry {
             throw new IllegalArgumentException("all three vertices are on the same ray");
 
         // calc normal
-        normal = v1.crossProduct(v2).normalize();
+        this.normal = v1.crossProduct(v2).normalize();
     }
     public Plane(Point p0, Vector normal) {
         this.p0 = p0;

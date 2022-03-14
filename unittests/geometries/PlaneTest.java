@@ -58,7 +58,7 @@ class PlaneTest {
         // TC01: There is a simple intersect ray to the plane (starts before the plane)
         Ray intersectRay = new Ray(new Point(1,0,0) , new Vector(2,1,1));
         Plane plane1 = new Plane(new Point(-3,4,6),new Point(2,2,2), new Point(1,-5,3));
-        assertEquals(plane1.findIntersections(intersectRay), new Point(3.16, 1.08, 1.08),  "Plane.findIntersections is not working for simple intersect ray");
+        assertEquals(new Point(3.16, 1.08, 1.08), plane1.findIntersections(intersectRay),"Plane.findIntersections is not working for simple intersect ray");
 
 
         // TC02: There is a simple not intersect ray to the plane (starts after the plane)
@@ -72,10 +72,32 @@ class PlaneTest {
         Plane plane2 = new Plane(new Point(-7,-14,0), new Point(20,-30,0), new Point(10,25,0));
         assertNull(plane2.findIntersections(parallelRay), "Plane.findIntersections is not returns null for parallel ray");
 
+        // TC04: The plane contains the ray
+        Ray containedRay = new Ray(new Point(1,2,0), new Vector(2,-8,0));
+        assertNull(plane2.findIntersections(containedRay), "Plane.findIntersections is not returns null for contained ray");//todo check if it the right option to do in contained ray
 
-        // TC03: co-located vertices
+        // TC06: The ray is orthogonal to the plane, and starts before the plane
+        Ray orthogonalBeforeRay = new Ray(new Point(3,30,12), new Vector(0,-1310,0));
+        Plane plane3 = new Plane(new Point(-7,0,-4), new Point(20,0, -35), new Point(10,0,25));
+        assertEquals(new Point(3, 0,12), plane3.findIntersections(orthogonalBeforeRay),"Plane.findIntersections is wrong for orthogonal ray that starts before the plane");
 
+        // TC07: The ray is orthogonal to the plane, and stars in the plane
+        Ray orthogonalInRay = new Ray(new Point(4,0,-12), new Vector(0,-1310,0));
+        assertEquals(new Point(4, 0,-12), plane3.findIntersections(orthogonalInRay), "Plane.findIntersections is wrong for orthogonal ray that starts before the plane");
 
-        assertEquals(List.of(new Point()), plane.findIntersections(ray));
+        // TC08: The ray is orthogonal to the plane, and stars after the plane
+        Ray orthogonalAfterRay = new Ray(new Point(3,30,12), new Vector(0,1310,0));
+        assertNull(plane3.findIntersections(orthogonalAfterRay), "Plane.findIntersections is not returns null for orthogonal ray that starts after the plane");
+
+        // TC09: The ray starts in the plane, neither orthogonal nor parallel
+        Ray startsInRay = new Ray(new Point(2,2,-2), new Vector(0,5,0));
+        Plane plane4 = new Plane(new Point(0,5,0), new Point(0,0,-5),new Point(10,0,0));
+        assertEquals(new Point(2,2,-2), plane4.findIntersections(startsInRay),"Plane.findIntersections is wrong for a ray that starts in the plane (neither parallel nor orthogonal)");
+
+        //TC10: The Ray starts in the plane`s q0, neither orthogonal nor parallel
+        Ray startsInPointRay = new Ray(new Point(0,5,0), new Vector(0,5,0));
+        assertEquals(new Point(0,5,0), plane4.findIntersections(startsInPointRay),"Plane.findIntersections is wrong for a ray that starts in the p0 of the plane (neither parallel nor orthogonal)");
+
+        //assertEquals(List.of(new Point()), plane.findIntersections(ray));
     }
 }
