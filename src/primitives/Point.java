@@ -1,6 +1,6 @@
 package primitives;
 
-import java.util.Objects;
+import java.util.*;
 
 public class Point {
 
@@ -13,15 +13,9 @@ public class Point {
         this.xyz = p;
     }
 
-    //public Double3 getX() {
-    //    return x;
-    //}
-    //public Double3 getY() {
-    //    return y;
-    //}
-    //public Double3 getZ() {
-    //    return z;
-    //}
+    public primitives.Double3 getXyz() {
+        return xyz;
+    }
 
     public Vector subtract(Point another) {
         return new Vector(this.xyz.d1 - another.xyz.d1, this.xyz.d2 - another.xyz.d2, this.xyz.d3 - another.xyz.d3);
