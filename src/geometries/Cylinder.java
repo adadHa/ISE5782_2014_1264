@@ -23,7 +23,7 @@ public class Cylinder extends Tube{
         // is p on the other base?
         Point p0 = getAxisRay().getP0();
         Point p0OnOtherBase = p0.add(v.scale(height));
-        Vector vectorPToP0OnOtherBase = p.subtract(p0);
+        Vector vectorPToP0OnOtherBase = p.subtract(p0OnOtherBase);
         if (vectorPToP0OnOtherBase.dotProduct(v) == 0)
             return  v;
 
