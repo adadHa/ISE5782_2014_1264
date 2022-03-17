@@ -120,11 +120,28 @@ class SphereTest {
 
         // **** Group: Ray's line is tangent to the sphere (all tests 0 points)
         // TC19: Ray starts before the tangent point
+        sphere = new Sphere(new Point(0,0,3), 1);
+        r = new Ray(new Point(2,0,2), new Vector(-1,0,0));
+        result = sphere.findIntersections(r);
+        assertNull(result, "TC19: Ray starts before the tangent point. Wrong number of points");
+
         // TC20: Ray starts at the tangent point
+        sphere = new Sphere(new Point(0,0,3), 1);
+        r = new Ray(new Point(0,0,2), new Vector(-1,0,0));
+        result = sphere.findIntersections(r);
+        assertNull(result, "TC20: Ray starts at the tangent point. Wrong number of points");
+
         // TC21: Ray starts after the tangent point
+        sphere = new Sphere(new Point(0,0,3), 1);
+        r = new Ray(new Point(-1,0,2), new Vector(-1,0,0));
+        result = sphere.findIntersections(r);
+        assertNull(result, "TC20: Ray starts at the tangent point. Wrong number of points");
 
         // **** Group: Special cases
-        // TC19: Ray's line is outside, ray is orthogonal to ray start to sphere's center line
-
+        // TC21: Ray's line is outside, ray is orthogonal to ray start to sphere's center line
+        sphere = new Sphere(new Point(0,0,3), 1);
+        r = new Ray(new Point(1,0,1), new Vector(1,0,0));
+        result = sphere.findIntersections(r);
+        assertNull(result, "TC21: Ray's line is outside, ray is orthogonal to ray start to sphere's center line. Wrong number of points");
     }
 }
