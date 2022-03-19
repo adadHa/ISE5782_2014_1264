@@ -30,6 +30,10 @@ class TriangleTest {
         /*ray always intersects the plane of the triangle, we check it, before of this function*/
 
         // TC01: There is a simple single test, ray intersect the triangle
+        Triangle _triangle1 = new Triangle(new Point(0,0,1), new Point(0,4,1), new Point(4,0,1));
+        Ray _simpleIntersectRay = new Ray(new Point(1,1,0), new Vector(0,0,1));
+        assertEquals(new Point(1,1,1), _triangle1.findIntersections(_simpleIntersectRay).get(0), "Triangle.findIntersection is not working for simple intersect ray");
+
         Triangle triangle1 = new Triangle(new Point(1,1,1), new Point(-1,-1,1), new Point(-2,2,0));
         Ray simpleIntersectRay = new Ray(new Point(5,0,0), new Vector(-8,0,1));
         assertEquals(new Point(-1,0,0.75), triangle1.findIntersections(simpleIntersectRay).get(0), "Triangle.findIntersection is not working for simple intersect ray");
