@@ -22,7 +22,7 @@ class SphereTest {
     }
 
     @Test
-    void testFindIntersections() {
+    void findIntersections() {
         Ray r = new Ray(new Point(2,0,0), new Vector(-5,-3,0));
         Sphere sphere = new Sphere(new Point (1, 0, 0), 1d);
 

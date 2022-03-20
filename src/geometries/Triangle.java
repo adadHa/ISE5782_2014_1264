@@ -29,6 +29,7 @@ public class Triangle extends Polygon {
     public List<Point> findIntersections(Ray ray) {
 
         List<Point> intersection = this.plane.findIntersections(ray);
+        Vector v = ray.getDir();
         if(intersection != null) { //we check in the beginning if the ray intersect the plane
             Vector v1 = this.vertices.get(0).subtract(ray.getP0());
             Vector v2 = this.vertices.get(1).subtract(ray.getP0());
@@ -42,11 +43,11 @@ public class Triangle extends Polygon {
             Vector n2 = v2CrossProdV3.normalize();
             Vector n3 = v3CrossProdV1.normalize();
 
-            double v1N1 = v1.dotProduct(n1);
-            double v2N1 = v2.dotProduct(n1);
-            double v3N1 = v3.dotProduct(n1);
+            double vN1 = v.dotProduct(n1);
+            double vN2 = v.dotProduct(n2);
+            double vN3 = v.dotProduct(n3);
 
-            if(v1N1 > 0 && v2N1 > 0 && v3N1 > 0 || v1N1 < 0 && v2N1 < 0 && v3N1 < 0) {
+            if(vN1 > 0 && vN2 > 0 && vN3 > 0 || vN1 < 0 && vN2 < 0 && vN3 < 0) {
                 //if we entered to hear, the ray intersect the triangle
                 return intersection;
             }
