@@ -38,4 +38,7 @@ public class Ray {
         return p0.equals(ray.p0) && dir.equals(ray.dir);
     }
 
+    public Point getPoint(double t){
+        return p0.add(dir.scale(t));
+    }
 }

@@ -41,6 +41,10 @@ public class Sphere implements Geometry{
         List<Point> resultList = new ArrayList<Point>();
         Vector v = ray.getDir();
         Point p0 = ray.getP0();
+        if(center.equals(p0)){ // p0 is the center
+            resultList.add(ray.getPoint(radius));
+            return resultList;
+        }
         Vector u = this.center.subtract(p0);
         double tm = v.dotProduct(u);
         double dSquare = u.lengthSquared() - tm * tm;
@@ -49,8 +53,8 @@ public class Sphere implements Geometry{
         double t2 = tm - th;
         if (v.normalize().equals(u.normalize())){ // v parallel to u <=> ray goes through the center of the sphere
             tm = u.length();
-            t1 = radius;
-            t2 = radius*-1;
+            t1 = tm + radius;
+            t2 = tm + radius*-1;
         }
         if (dSquare >= this.radius * this.radius) // if d >= r there are no intersections.
             return  null;

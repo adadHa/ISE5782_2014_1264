@@ -74,4 +74,19 @@ public class PolygonTest{
         double sqrt3 = Math.sqrt(1d / 3);
         assertEquals(new Vector(sqrt3, sqrt3, sqrt3), pl.getNormal(new Point(0, 0, 1)), "Bad normal to trinagle");
     }
+
+    /**
+     * Test method for {@link geometries.Polygon#findIntersections(Ray)}.
+     */
+    @Test
+    public void findIntersections() {
+        // ============ Equivalence Partitions Tests ==============
+        // TC01: simple case
+        Polygon pl = new Polygon(new Point(0, 0, 0), new Point(1, 0, 0), new Point(1, 1, 0), new Point(0, 1, 0));
+        Ray r = new Ray(new Point(0.5, 0.5, -1), new Vector(0,0,1));
+        assertEquals(new Point(0.5, 0.5, 0), pl.findIntersections(r), "TC01: simple case. wrong return vale");
+    }
+
+
+
 }
