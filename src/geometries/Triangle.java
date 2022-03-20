@@ -42,7 +42,11 @@ public class Triangle extends Polygon {
             Vector n2 = v2CrossProdV3.normalize();
             Vector n3 = v3CrossProdV1.normalize();
 
-            if((v1.dotProduct(n1) > 0 && v2.dotProduct(n2) > 0 && v3.dotProduct(n3) > 0) || (v1.dotProduct(n1) < 0 && v2.dotProduct(n2) < 0 && v3.dotProduct(n3) < 0)) {
+            double v1N1 = v1.dotProduct(n1);
+            double v2N1 = v2.dotProduct(n1);
+            double v3N1 = v3.dotProduct(n1);
+
+            if(v1N1 > 0 && v2N1 > 0 && v3N1 > 0 || v1N1 < 0 && v2N1 < 0 && v3N1 < 0) {
                 //if we entered to hear, the ray intersect the triangle
                 return intersection;
             }
