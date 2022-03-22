@@ -50,8 +50,8 @@ public class Camera {
      * @param distancet
      * @return this
      */
-    public Camera setVPDistance(double distancet) {
-        this.distanceCameraToViewPlane = distancet;
+    public Camera setVPDistance(double distance) {
+        this.distanceCameraToViewPlane = distance;
         return this;
     }
 
