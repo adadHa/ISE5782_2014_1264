@@ -70,7 +70,7 @@ public class Plane implements Geometry {
         if(!isZero(planeNormalRayDirDotProduct)) {
             double t = alignZero(this.normal.dotProduct(planeP0MinusRayP0)) / planeNormalRayDirDotProduct; //t = (plane normal * vector (plane p0 - ray p0)) / (plane normal * ray dir)
             if (t > 0) {
-                Point intersection = ray.getP0().add(ray.getDir().scale(t));//we return the point intersection between the ray and the plane (point = ray P0 + t * ray dir)
+                Point intersection = ray.getPoint(t);//we return the point intersection between the ray and the plane (point = ray P0 + t * ray dir)
                 if (intersection != ray.getP0()) { // todo: need we this line? only if temp = 0 intersection = p0 of the ray
                     List<Point> toReturn = new ArrayList<Point>();
                     toReturn.add(intersection);

@@ -27,10 +27,7 @@ public class Camera {
         this.vTo = vTo.normalize();
         this.vUp = vUp.normalize();
         this.vRight = vUp.crossProduct(vTo).normalize();
-
         this.position = position;
-        this.vTo = vTo;
-        this.vUp = vUp;
     }
 
     /**
@@ -47,7 +44,7 @@ public class Camera {
 
     /**
      *
-     * @param distancet
+     * @param distance
      * @return this
      */
     public Camera setVPDistance(double distance) {
@@ -120,7 +117,20 @@ public class Camera {
      * @return the constructed ray.
      */
     public Ray constructRay(int nX, int nY, int j, int i){
-        return null;
+        //Ray[][] rayThroughPixel = new Ray[nX][nY];
+        //rayThroughPixel[i][j] = new Ray(position, )
+
+        Point pIJ = position.add(vTo.scale(distanceCameraToViewPlane));
+        double rY = this.height / nY; //rY is the size of the vertical rib of the pixel (without the horizontal rib)
+        double rX = this.width / nX; //rX is the size of the horizontal rib of the pixel (without teh vertical rib)
+
+        double xJ = (j - (nX - 1)/2) * rX; //xJ is the horizontal distance of our pixel from the central pixel (in pixels)
+        double yI = -(i - (nY - 1)/2) * rY; //yI is the vertical distance of our pixel from the central pixel (in pixels)
+        if (xJ != 0) pIJ = pIJ.add(vRight.scale(xJ));
+        if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
+        Vector vectorToThePixel = pIJ.subtract(this.position);
+        Ray rayThroughPixel = new Ray(this.position, vectorToThePixel);
+        return rayThroughPixel;
     }
 
 }

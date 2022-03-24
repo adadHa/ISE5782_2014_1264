@@ -38,6 +38,11 @@ public class Ray {
         return p0.equals(ray.p0) && dir.equals(ray.dir);
     }
 
+    /**
+     *
+     * @param t
+     * @return point on ray scaled by t
+     */
     public Point getPoint(double t){
         return p0.add(dir.scale(t));
     }
