@@ -56,11 +56,12 @@ public class Camera {
 
     /**
      *
-     * @param base_render_test
+     * @param imageWriter
      * @return
      */
-    public Object setImageWriter(ImageWriter imageWriter) {
+    public Camera setImageWriter(ImageWriter imageWriter) {
         this.imageWriter = imageWriter;
+        return this;
     }
 
     /**
