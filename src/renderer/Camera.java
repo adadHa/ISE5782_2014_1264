@@ -15,6 +15,8 @@ public class Camera {
     private double width;
     private double height;
 
+    private ImageWriter imageWriter;
+
     /**
      *
      * @param position
@@ -50,6 +52,15 @@ public class Camera {
     public Camera setVPDistance(double distance) {
         this.distanceCameraToViewPlane = distance;
         return this;
+    }
+
+    /**
+     *
+     * @param base_render_test
+     * @return
+     */
+    public Object setImageWriter(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter;
     }
 
     /**
@@ -132,5 +143,6 @@ public class Camera {
         Ray rayThroughPixel = new Ray(this.position, vectorToThePixel);
         return rayThroughPixel;
     }
+
 
 }
