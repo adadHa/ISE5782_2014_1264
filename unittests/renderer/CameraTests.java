@@ -24,7 +24,7 @@ class CameraTests {
         assertEquals(new Ray(ZERO_POINT, new Vector(1, -1, -10)),
                 camera.setVPSize(8, 8).constructRay(4, 4, 1, 1), badRay);
 
-        // =============== Boundary Values Tests ==================
+        // =============== Boundary Value Tests ==================
         // BV01: 3X3 Center (1,1)
         assertEquals(new Ray(ZERO_POINT, new Vector(0, 0, -10)),
                 camera.setVPSize(6, 6).constructRay(3, 3, 1, 1), badRay);

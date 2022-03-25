@@ -26,7 +26,7 @@ public class Camera {
             throw new IllegalArgumentException("Vto is not orthogonal to vUp");
         this.vTo = vTo.normalize();
         this.vUp = vUp.normalize();
-        this.vRight = vUp.crossProduct(vTo).normalize();
+        this.vRight = vTo.crossProduct(vUp).normalize();
         this.position = position;
     }
 
@@ -124,8 +124,8 @@ public class Camera {
         double rY = this.height / nY; //rY is the size of the vertical rib of the pixel (without the horizontal rib)
         double rX = this.width / nX; //rX is the size of the horizontal rib of the pixel (without teh vertical rib)
 
-        double xJ = (j - (nX - 1)/2) * rX; //xJ is the horizontal distance of our pixel from the central pixel (in pixels)
-        double yI = -(i - (nY - 1)/2) * rY; //yI is the vertical distance of our pixel from the central pixel (in pixels)
+        double xJ = (j - (double)(nX - 1)/2) * rX; //xJ is the horizontal distance of our pixel from the central pixel (in pixels)
+        double yI = -(i - (double)(nY - 1)/2) * rY; //yI is the vertical distance of our pixel from the central pixel (in pixels)
         if (xJ != 0) pIJ = pIJ.add(vRight.scale(xJ));
         if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
         Vector vectorToThePixel = pIJ.subtract(this.position);
