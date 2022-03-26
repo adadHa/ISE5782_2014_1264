@@ -1,8 +1,11 @@
 package renderer;
 
+import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
+
+import java.util.MissingResourceException;
 
 import static primitives.Util.isZero;
 
@@ -16,6 +19,7 @@ public class Camera {
     private double height;
 
     private ImageWriter imageWriter;
+    private RayTracerBasic rayTracer;
 
     /**
      *
@@ -61,6 +65,16 @@ public class Camera {
      */
     public Camera setImageWriter(ImageWriter imageWriter) {
         this.imageWriter = imageWriter;
+        return this;
+    }
+
+    /**
+     *
+     * @param rayTracerBasic
+     * @return
+     */
+    public Camera setRayTracer(RayTracerBasic rayTracerBasic) {
+        this.rayTracer = rayTracerBasic;
         return this;
     }
 
@@ -145,5 +159,38 @@ public class Camera {
         return rayThroughPixel;
     }
 
+    /**
+     * this method render a 3d scene to an image.
+     */
+    public void renderImage() {
+        if(imageWriter == null ||
+                rayTracer == null)
+            throw new MissingResourceException("Not all fields of camera were initiallized", "", "");
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        Ray ray;
+        Color pixelColor;
+        for (int i = 0; i < nX; i++){
+            for (int j = 0; j < nY; j++){
+                ray = constructRay(nX, nY, j, i);
+                pixelColor = rayTracer.traceRay(ray);
+                imageWriter.writePixel(i, j, pixelColor);
+            }
+        }
+    }
 
+    /**
+     * this method add a grid to the rendered image.
+     * @param i
+     * @param color
+     */
+    public void printGrid(int i, Color color) {
+    }
+
+    /**
+     * Function writeToImage produces unoptimized png file of the image according to pixel color matrix in the directory of the project
+     */
+    public void writeToImage() {
+        imageWriter.writeToImage();
+    }
 }
