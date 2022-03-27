@@ -174,7 +174,7 @@ public class Camera {
             for (int j = 0; j < nY; j++){
                 ray = constructRay(nX, nY, j, i);
                 pixelColor = rayTracer.traceRay(ray);
-                imageWriter.writePixel(i, j, pixelColor);
+                imageWriter.writePixel(j, i, pixelColor);
             }
         }
     }

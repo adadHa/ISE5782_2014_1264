@@ -93,23 +93,26 @@ public class Polygon implements Geometry {
     @Override
     public List<Point> findIntersections(Ray ray) {
         List<Point> intersection = this.plane.findIntersections(ray);
-        if(intersection != null) { //we check in the beginning if the ray intersect the plane
-            Vector v1 = this.vertices.get(0).subtract(ray.getP0());
-            Vector v2 = this.vertices.get(1).subtract(ray.getP0());
-            Vector v3 = this.vertices.get(2).subtract(ray.getP0());
-
-            Vector v1CrossProdV2 = v1.crossProduct(v2);
-            Vector v2CrossProdV3 = v2.crossProduct(v3);
-            Vector v3CrossProdV1 = v3.crossProduct(v1);
-
-            Vector n1 = v1CrossProdV2.normalize();
-            Vector n2 = v2CrossProdV3.normalize();
-            Vector n3 = v3CrossProdV1.normalize();
-
-            if((v1.dotProduct(n1) > 0 && v2.dotProduct(n2) > 0 && v3.dotProduct(n3) > 0) || (v1.dotProduct(n1) < 0 && v2.dotProduct(n2) < 0 && v3.dotProduct(n3) < 0)) {
-                //if we entered to hear, the ray intersect the triangle
-                return intersection;
+        if(intersection != null) {
+            //now we check if the point is inside the polygon
+            Point testPoint = intersection.get(0);
+            Point edgePoint1, edgePoint2;
+            int i, j =0;
+            int counter = 0; //counter how many times the horizontal ray crosses any edge.
+            int size = vertices.size();
+            double xEdge, yEdge;
+            for (i = 0, j = size - 1; i < size; j = i++){
+                edgePoint1 = vertices.get(i);
+                edgePoint2 = vertices.get(j);
+                xEdge = edgePoint2.getX() - edgePoint2.getX();
+                yEdge = edgePoint2.getY() - edgePoint2.getY();
+                if( (edgePoint1.getY() > testPoint.getY()) &&
+                        (testPoint.getX() < (xEdge)*(testPoint.getY()-edgePoint2.getY()) / yEdge  +  edgePoint1.getX()))
+                    counter++;
             }
+            if (counter%2!=0) // the point is inside the polygon
+                return intersection;
+
         }
         return null;
     }
