@@ -76,15 +76,41 @@ public class PolygonTest{
     }
 
     /**
-     * Test method for {@link geometries.Polygon#findIntersections(Ray)}.
+     * Test method for {@link Polygon#findIntersections(Ray)}.
      */
     @Test
     public void findIntersections() {
         // ============ Equivalence Partitions Tests ==============
-        // TC01: simple case
+        // TC01: simple case, point is inside polygon
         Polygon pl = new Polygon(new Point(0, 0, 0), new Point(1, 0, 0), new Point(1, 1, 0), new Point(0, 1, 0));
         Ray r = new Ray(new Point(0.5, 0.5, -1), new Vector(0,0,1));
-        assertEquals(new Point(0.5, 0.5, 0), pl.findIntersections(r), "TC01: simple case. wrong return vale");
+        assertEquals(new Point(0.5, 0.5, 0), pl.findIntersections(r).get(0), "TC01: simple case. wrong return vale");
+
+        // TC02: There is a simple test, ray do not intersect the polygon, opposite to triangles ribs
+        pl = new Polygon(new Point(1,1,1), new Point(-1,-1,1), new Point(-2,2,0),new Point(1,3,0.5));
+        Ray oppositeToRibRay = new Ray(new Point(5,0,0), new Vector(-4,0,1));
+        assertNull(pl.findIntersections(oppositeToRibRay), "Polygon.findIntersections is not returns null for a ray that not intersect the triangle, but intersect on the opposite of one of the triangle ribs");
+
+        // TC03: There is a simple test, ray do not intersect the triangle, opposite to triangle vertexes
+        Ray oppositeToVertexRay = new Ray(new Point(4,2,0), new Vector(-4,-4,1));
+        assertNull(pl.findIntersections(oppositeToVertexRay), "Polygon.findIntersections is not returns null for a point that intersect the triangle, but intersect on the opposite of one of the triangles vertexes");
+
+        // =============== Boundary Values Tests ==================
+
+        // TC04: There is test, of a ray that intersect the rib of the polygon
+        Ray intersectRibRay = new Ray(new Point(-1,1,2), new Vector(1,-1,-1));
+        //assertEquals(new Point(0,0,1), triangle1.findIntersections(intersectRibRay), "triangle.findIntersections not working for intersection in the rib");
+        assertNull(pl.findIntersections(intersectRibRay), "Polygon.findIntersections not returns null for intersection in the rib");
+
+        // TC05: There is test, of a ray that intersect the vertex of the polygon
+        Ray intersectVertexRay = new Ray(new Point(3,3,5), new Vector(-5,-1,-5));
+        assertNull(pl.findIntersections(intersectVertexRay), "Polygon.findIntersections not returns null for intersection in the vertex");
+
+        // TC06: There is test, of a ray that intersect the continuing of the rib of the polygon
+        Ray intersectRibsContinueRay = new Ray(new Point(0,4,4), new Vector(-5,-1,-5));
+        assertNull(pl.findIntersections(intersectRibsContinueRay), "Polygon.findIntersections not returns null for intersection in the continuing of the rib");//the intersection in the point (-5,3,-1)
+
+
     }
 
 
