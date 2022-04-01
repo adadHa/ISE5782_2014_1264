@@ -181,10 +181,21 @@ public class Camera {
 
     /**
      * this method add a grid to the rendered image.
-     * @param i
+     * @param interval the width/height of each square in the grid.
      * @param color
      */
-    public void printGrid(int i, Color color) {
+    public void printGrid(int interval, Color color) {
+        if(imageWriter == null)
+            throw new MissingResourceException("ImageWriter is null","","");
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        for (int i = 0; i < nX; i++){
+            for (int j = 0; j < nY; j++){
+                if (j % interval == 0 ||
+                        i % interval == 0)
+                    imageWriter.writePixel(j, i, color);
+            }
+        }
     }
 
     /**
