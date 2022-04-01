@@ -6,7 +6,7 @@ import primitives.Ray;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Geometries implements Intersectable{
+public class Geometries extends Intersectable{
     final private List<Intersectable> geometriesList;
 
     public Geometries()

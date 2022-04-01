@@ -5,7 +5,8 @@ import primitives.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Sphere implements Geometry{
+
+public class Sphere extends Geometry{
 
     final Point center;
     final double radius;
