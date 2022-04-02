@@ -39,4 +39,20 @@ public class Geometries extends Intersectable{
         }
         return null;
     }
+
+    @Override
+    protected List<GeoPoint> findGeoIntersectionHelper(Ray ray) {
+        ArrayList<GeoPoint> resultList = new ArrayList<GeoPoint>();
+        for (Intersectable g : geometriesList) {
+            List<Point> l = g.findIntersections(ray);
+            if (l != null)
+                for (Point p : l) {
+                    resultList.add(new GeoPoint((Geometry) g,p));
+                }
+        }
+        if(resultList.size() != 0){
+            return  resultList;
+        }
+        return null;
+    }
 }

@@ -18,46 +18,48 @@ public abstract class Intersectable {
 
     protected abstract List<GeoPoint> findGeoIntersectionHelper(Ray ray);
 
+    /**
+     * this class enables to represent a point with its geometry.
+     */
+    public static class GeoPoint {
+        /**
+         * the geometry that the point is lies on
+         */
+        public final Geometry geometry;
+        /**
+         * the point itself
+         */
+        public final Point point;
+
+        /**
+         * Constructor for GeoPint
+         *
+         * @param geometry
+         * @param point
+         */
+        public GeoPoint(Geometry geometry, Point point) {
+            this.geometry = geometry;
+            this.point = point;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null) return false;
+            if (!(o instanceof Point)) return false;
+            GeoPoint other = (GeoPoint) o;
+            return this.point.equals(other.point) && this.geometry.equals(other.geometry);
+        }
+
+        @Override
+        public String toString() {
+            return "GeoPoint{" +
+                    "geometry=" + geometry +
+                    ", point=" + point +
+                    '}';
+        }
+    }
 }
 
-/**
- * this class enables to represent a point with its geometry.
- */
-public static class GeoPoint{
-    /**
-     * the geometry that the point is lies on
-     */
-    public final Geometry geometry;
-    /**
-     * the point itself
-     */
-    public final Point point;
 
-    /**
-     * Constructor for GeoPint
-     * @param geometry
-     * @param point
-     */
-    public GeoPoint(Geometry geometry, Point point) {
-        this.geometry = geometry;
-        this.point = point;
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if(o == null) return false;
-        if (!(o instanceof Point)) return false;
-        GeoPoint other = (GeoPoint) o;
-        return this.point.equals(other.point) && this.geometry.equals(other.geometry);
-    }
-
-    @Override
-    public String toString() {
-        return "GeoPoint{" +
-                "geometry=" + geometry +
-                ", point=" + point +
-                '}';
-    }
-
-}
