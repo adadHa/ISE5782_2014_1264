@@ -92,36 +92,7 @@ public class Polygon extends Geometry {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
-        List<Point> intersection = this.plane.findIntersections(ray);
-        if(intersection != null) {
-            //now we check if the point is inside the polygon
-            Point testP = intersection.get(0);
-            Point edgeP1, edgeP2;
-            int i, j =0;
-            int counter = 0; //counter how many times the horizontal ray crosses any edge.
-            int size = vertices.size();
-            double xEdge, yEdge;
-            for (i = 0, j = size - 1; i < size; j = i++){
-                edgeP1 = vertices.get(i);
-                edgeP2 = vertices.get(j);
-                xEdge = edgeP2.getX() - edgeP1.getX();
-                yEdge = edgeP2.getY() - edgeP1.getY();
-                if( (edgeP1.getY() > testP.getY()) != (edgeP2.getY() > testP.getY()) &&
-                        (testP.getX() < (xEdge)*(testP.getY()-edgeP1.getY()) / yEdge  +  edgeP1.getX()))
-                    counter++;
-                if (testP.equals(vertices.get(i)))
-                    return null;
-            }
-            if (counter%2!=0) // the point is inside the polygon
-                return intersection;
-
-        }
-        return null;
-    }
-
-    @Override
-    protected List<GeoPoint> findGeoIntersectionHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         List<Point> intersection = this.plane.findIntersections(ray);
         if(intersection != null) {
             //now we check if the point is inside the polygon

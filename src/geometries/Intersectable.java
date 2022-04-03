@@ -11,12 +11,17 @@ public abstract class Intersectable {
      * @param ray
      * @return
      */
-    public abstract List<Point> findIntersections(Ray ray);
-    public List<GeoPoint> findGeoIntersection(Ray ray){
-        return findGeoIntersectionHelper(ray);
+    public List<Point> findIntersections(Ray ray){
+        var geoList = findGeoIntersections(ray);
+        return geoList == null ? null
+                : geoList.stream().map(gp -> gp.point).toList();
     }
 
-    protected abstract List<GeoPoint> findGeoIntersectionHelper(Ray ray);
+    public List<GeoPoint> findGeoIntersections(Ray ray){
+        return findGeoIntersectionsHelper(ray);
+    }
+
+    protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
 
     /**
      * this class enables to represent a point with its geometry.

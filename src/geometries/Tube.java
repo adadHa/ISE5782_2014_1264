@@ -40,13 +40,9 @@ public class Tube extends Geometry {
         return n;
     }
 
-    @Override
-    public List<Point> findIntersections(Ray ray) {
-        return null;
-    }
 
     @Override
-    protected List<GeoPoint> findGeoIntersectionHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         return null;
     }
 }

@@ -2,12 +2,8 @@ package renderer;
 
 import geometries.Intersectable.GeoPoint;
 import primitives.Color;
-import primitives.Point;
 import primitives.Ray;
 import scene.Scene;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RayTracerBasic extends RayTracerBase{
 
@@ -29,7 +25,7 @@ public class RayTracerBasic extends RayTracerBase{
     public Color traceRay(Ray ray) {
         Color pixelColor;
         GeoPoint closestPoint;
-        var intersections = scene.geometries.findGeoIntersection(ray);
+        var intersections = scene.geometries.findGeoIntersections(ray);
         if (intersections != null){
             closestPoint = ray.findClosestGeoPoint(intersections);
             pixelColor = calcColor(closestPoint);
