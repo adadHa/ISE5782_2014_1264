@@ -162,7 +162,7 @@ public class Camera {
     /**
      * this method render a 3d scene to an image.
      */
-    public void renderImage() {
+    public Camera renderImage() {
         if(imageWriter == null ||
                 rayTracer == null)
             throw new MissingResourceException("Not all fields of camera were initiallized", "", "");
@@ -177,6 +177,7 @@ public class Camera {
                 imageWriter.writePixel(j, i, pixelColor);
             }
         }
+        return this;
     }
 
     /**

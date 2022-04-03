@@ -11,7 +11,7 @@ public class PointLight extends Light implements LightSource{
     /**
      * The position point of the pointlight
      */
-    private final Point position;
+     protected final Point position;
 
     private double kC = 1;
     private double kL = 0;
@@ -48,28 +48,27 @@ public class PointLight extends Light implements LightSource{
      * Constructor for PointLight
      * @param intensity
      * @param position
-     * @param kC
-     * @param kL
-     * @param kQ
      */
-    public PointLight(Color intensity, Point position, double kC, double kL, double kQ) {
+    public PointLight(Color intensity, Point position) {
         super(intensity);
         this.position = position;
-        this.kC = kC;
-        this.kL = kL;
-        this.kQ = kQ;
     }
 
     @Override
     public Color getIntensity(Point p) {
-        Color iL = intensity.reduce(kC +
-                                kL*p.distanceSquared(position) +
-                                kQ*p.distance(position));
+        Color iL = intensity.reduce(getDistanceByK(p));
         return iL;
     }
 
     @Override
     public Vector getL(Point p) {
         return null;
+    }
+
+    protected double getDistanceByK(Point p){
+        double distance = p.distance(position);
+        return  kC +
+                kL*distance +
+                kQ*distance*distance;
     }
 }

@@ -16,14 +16,20 @@ public class SpotLight extends PointLight{
      * @param kQ
      * @param direction
      */
-    public SpotLight(Color intensity, Point position, double kC, double kL, double kQ, Vector direction) {
-        super(intensity, position, kC, kL, kQ);
-        this.direction = direction;
+    public SpotLight(Color intensity, Point position, Vector direction) {
+        super(intensity, position);
+        this.direction = direction.normalize();
     }
 
     @Override
     public Color getIntensity(Point p) {
-        return super.getIntensity(p);
+        Vector l = p.subtract(position).normalize();
+        double dirL = direction.dotProduct(l);
+        if(dirL > 0){
+            return intensity.scale(dirL).reduce(getDistanceByK(p));
+        }
+        else
+            return intensity.scale(0);
     }
 
     @Override
