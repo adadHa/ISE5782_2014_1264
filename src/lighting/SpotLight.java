@@ -23,7 +23,7 @@ public class SpotLight extends PointLight{
 
     @Override
     public Color getIntensity(Point p) {
-        Vector l = p.subtract(position).normalize();
+        Vector l = getL(p);
         double dirL = direction.dotProduct(l);
         if(dirL > 0){
             return intensity.scale(dirL).reduce(getDistanceByK(p));

@@ -11,7 +11,7 @@ public class PointLight extends Light implements LightSource{
     /**
      * The position point of the pointlight
      */
-     protected final Point position;
+    private final Point position;
 
     private double kC = 1;
     private double kL = 0;
@@ -62,7 +62,7 @@ public class PointLight extends Light implements LightSource{
 
     @Override
     public Vector getL(Point p) {
-        return null;
+        return p.subtract(position).normalize();
     }
 
     protected double getDistanceByK(Point p){
