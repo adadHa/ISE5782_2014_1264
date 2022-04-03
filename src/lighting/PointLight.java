@@ -18,10 +18,20 @@ public class PointLight extends Light implements LightSource{
     private double kQ = 0;
 
     /**
+     * Constructor for PointLight
+     * @param intensity
+     * @param position
+     */
+    public PointLight(Color intensity, Point position) {
+        super(intensity);
+        this.position = position;
+    }
+    
+    /**
      * Setter method for kC
      * @param kC
      */
-    public PointLight setkC(double kC) {
+    public PointLight setKc(double kC) {
         this.kC = kC;
         return this;
     }
@@ -30,7 +40,7 @@ public class PointLight extends Light implements LightSource{
      * Setter method for kL
      * @param kL
      */
-    public PointLight setkL(double kL) {
+    public PointLight setKl(double kL) {
         this.kL = kL;
         return this;
     }
@@ -39,19 +49,9 @@ public class PointLight extends Light implements LightSource{
      * Setter method for kQ
      * @param kQ
      */
-    public PointLight setkQ(double kQ) {
+    public PointLight setKq(double kQ) {
         this.kQ = kQ;
         return this;
-    }
-
-    /**
-     * Constructor for PointLight
-     * @param intensity
-     * @param position
-     */
-    public PointLight(Color intensity, Point position) {
-        super(intensity);
-        this.position = position;
     }
 
     @Override

@@ -11,9 +11,6 @@ public class SpotLight extends PointLight{
      * Constructor for SpotLight
      * @param intensity
      * @param position
-     * @param kC
-     * @param kL
-     * @param kQ
      * @param direction
      */
     public SpotLight(Color intensity, Point position, Vector direction) {
@@ -34,6 +31,6 @@ public class SpotLight extends PointLight{
 
     @Override
     public Vector getL(Point p) {
-        return direction;
+        return super.getL(p);
     }
 }
