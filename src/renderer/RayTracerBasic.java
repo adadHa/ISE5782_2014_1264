@@ -75,7 +75,7 @@ public class RayTracerBasic extends RayTracerBase{
     private double calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {
         //first, we calc r, the specular vector
         double ln = l.dotProduct(n);
-        Vector r = l.subtract(n.scale(-2*ln)).normalize();
+        Vector r = l.add(n.scale(-2*ln)).normalize();
         double vr = v.dotProduct(r);
 
         //now we calc specular effect

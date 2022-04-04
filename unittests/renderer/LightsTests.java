@@ -133,4 +133,18 @@ public class LightsTests {
 				.writeToImage(); //
 	}
 
+	@Test
+	public void specularEffect() {
+		Scene scene = new Scene("scene").setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15)));
+		scene.geometries.add(new Sphere(new Point(0,0,0), 5).setEmission(spCL).setMaterial(material));
+		scene.lights.add(new PointLight(spCL,new Point(10,0,0)).setKl(0.001).setKq(0.0001));
+		Camera camera = new Camera(new Point(300,0,0),new Vector(-1,0,0),new Vector(0,0,1));
+		camera.setVPSize(3,3).setVPDistance(295).setRayTracer(new RayTracerBasic(scene))
+				.setImageWriter(new ImageWriter("specuralEffect",3,3))
+				.renderImage()
+				.writeToImage();
+
+
+	}
+
 }
