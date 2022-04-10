@@ -27,7 +27,9 @@ public class CameraIntegrationTests {
     Camera camera = new Camera(position, vTo, vUp);
 
 
-    //help function, call to the function construct ray from our camera, and send these rays to the shape, return the amount of the intersections
+    /**
+     *  help function, call to the function construct ray from our camera, and send these rays to the shape, return the amount of the intersections
+     */
     private int returnSumIntersections(Intersectable shape){
         int sumIntersections = 0;
         for(int i = 0; i < nX; i++){
