@@ -144,7 +144,37 @@ public class LightsTests {
 				.renderImage()
 				.writeToImage();
 
-
 	}
+
+	@Test
+	public void triangleMultiplyLightSources(){
+		scene2.geometries.add(triangle1, triangle2);
+		scene2.lights.add(new SpotLight(trCL, trPL, trDL).setKl(0.001).setKq(0.0001));
+		scene2.lights.add(new PointLight(new Color(0,255,255),new Point(50,60,-100)));
+		scene2.lights.add(new DirectionalLight(new Color(0,123,0),new Vector(-10,1,2)));
+		scene2.lights.add(new PointLight(new Color(125,0,125),new Point(50,30,1000)));
+
+		ImageWriter imageWriter = new ImageWriter("triangleMultiplyLightSources", 500, 500);
+		camera2.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene2)) //
+				.renderImage() //
+				.writeToImage(); //
+	}
+
+	@Test
+	public void sphereMultiplyLightSources(){
+		scene1.geometries.add(sphere);
+		scene1.lights.add(new SpotLight(spCL, spPL, new Vector(1, 1, -0.5)).setKl(0.001).setKq(0.0001));
+		scene1.lights.add(new PointLight(new Color(0,120,120), new Point(-50,-50, 100)));
+		scene1.lights.add(new DirectionalLight(new Color(123,255,0), new Vector(-50,-50, -50)));
+
+		ImageWriter imageWriter = new ImageWriter("sphereMultiplyLightSources", 500, 500);
+		camera1.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene1)) //
+				.renderImage() //
+				.writeToImage(); //
+	}
+
+
 
 }
