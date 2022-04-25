@@ -23,6 +23,7 @@ public class RayTracerBasic extends RayTracerBase{
      */
     private static final double MIN_CALC_COLOR_K = 0.001;
 
+    private static final double INITIAL_K = 1.0;
 
     /**
      * Constractor for Ray Tracer
@@ -67,11 +68,15 @@ public class RayTracerBasic extends RayTracerBase{
         return closestPoint == null ? scene.background : calcColor(closestPoint, ray);
     }
 
+    private Color calcColor(GeoPoint gp, Ray ray){
+        return calcColor(gp, ray, MAX_CALC_COLOR_LEVEL, INITIAL_K)
+                .add(scene.ambientLight.getIntensity());
+    }
 
-    private Color calcColor(GeoPoint intersection, Ray ray){
-        return scene.ambientLight.getIntensity()
-                .add(intersection.geometry.getEmission(),
-                        calcColorLocalEffects(intersection, ray));
+    private Color calcColor(GeoPoint intersection, Ray ray, int level, double k){
+        Color color = intersection.geometry.getEmission().add(
+                calcColorLocalEffects(intersection, ray));
+        return 1 == level ? color : color.add(calcGlobalEffects(intersection,ray,level,k))
     }
 
     /**
