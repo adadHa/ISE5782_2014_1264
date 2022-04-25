@@ -7,7 +7,9 @@ import primitives.Ray;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TubeTest {
+class
+
+TubeTest {
     /**
      * Test method for {@link geometries.Tube#getNormal(Point)}.
      */

@@ -64,4 +64,14 @@ class TriangleTest {
 
     }
 
+    @Test
+    void findGeoIntersectionsHelper() {
+        double maxDistance = .5;
+        // TC01: There is an intersection, but beyond maxDistance.
+        Triangle _triangle1 = new Triangle(new Point(0,0,1), new Point(0,4,1), new Point(4,0,1));
+        Ray _simpleIntersectRay = new Ray(new Point(1,1,0), new Vector(0,0,1));
+        assertNull(_triangle1.findGeoIntersectionsHelper(_simpleIntersectRay, maxDistance),
+                "Triangle.findGeoIntersectionsHelper is not working for simple intersect ray");
+
+    }
 }

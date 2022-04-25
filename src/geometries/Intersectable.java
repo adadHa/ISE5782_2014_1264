@@ -9,19 +9,36 @@ public abstract class Intersectable {
     /**
      * This method find intersecions points of an Intersectable shpae, with a given ray
      * @param ray
-     * @return
+     * @return list of intersections points
      */
     public List<Point> findIntersections(Ray ray){
-        var geoList = findGeoIntersections(ray);
+        var geoList = findGeoIntersections(ray, Double.POSITIVE_INFINITY);
         return geoList == null ? null
                 : geoList.stream().map(gp -> gp.point).toList();
     }
 
-    public List<GeoPoint> findGeoIntersections(Ray ray){
-        return findGeoIntersectionsHelper(ray);
+    /**
+     * This method find intersecions points of an Intersectable shpae, with a given ray
+     * @param ray
+     * @return list of intersections points
+     */
+    public final List<GeoPoint> findGeoIntersections(Ray ray) {
+        return findGeoIntersections(ray, Double.POSITIVE_INFINITY);
     }
 
-    protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
+    /**
+     * This method find intersecions geopoints of an Intersectable shpae, with a given ray
+     * @param ray
+     * @return list of intersections geopoints
+     */
+    public List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance){
+        return findGeoIntersectionsHelper(ray, maxDistance);
+    }
+
+    protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance);
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+        return findGeoIntersectionsHelper(ray,Double.POSITIVE_INFINITY);
+    }
 
     /**
      * this class enables to represent a point with its geometry.

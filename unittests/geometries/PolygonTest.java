@@ -114,5 +114,14 @@ public class PolygonTest{
     }
 
 
+    @Test
+    void findGeoIntersectionsHelper() {
+        double maxDistance = .5;
+        // TC01: There is an intersection, but beyond maxDistance.
+        Polygon pl = new Polygon(new Point(0, 0, 0), new Point(1, 0, 0), new Point(1, 1, 0), new Point(0, 1, 0));
+        Ray r = new Ray(new Point(0.5, 0.5, -1), new Vector(0,0,1));
+        assertNull(pl.findGeoIntersectionsHelper(r, maxDistance),
+                "Polygon.findGeoIntersectionsHelper is not working for simple intersect ray");
 
+    }
 }

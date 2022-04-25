@@ -44,7 +44,7 @@ class PlaneTest {
      * Test method for {@link geometries.Plane#getNormal(Point)}.
      */
     @Test
-    void testGetNormal() {
+    void getNormal() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple single test here
         Plane pl = new Plane(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 0, 0));
@@ -53,7 +53,7 @@ class PlaneTest {
     }
 
     @Test
-    void testFindIntersections() {
+    void findIntersections() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: There is a simple intersect ray to the plane (starts before the plane)
         Ray intersectRay = new Ray(new Point(1,0,0) , new Vector(2,1,1));
@@ -105,4 +105,17 @@ class PlaneTest {
 
         //assertEquals(List.of(new Point()), plane.findIntersections(ray));
     }
+
+    @Test
+    void findGeoIntersectionsHelper() {
+        double maxDistance = 2.5;
+        // TC01: There is an intersection, but beyond maxDistance.
+        Ray intersectRay = new Ray(new Point(1,0,0) , new Vector(2,1,1));
+        Plane plane1 = new Plane(new Point(-3,4,6),new Point(2,2,2), new Point(1,-5,3));
+        assertNull(plane1.findGeoIntersectionsHelper(intersectRay, maxDistance),
+                "Plane.findGeoIntersectionsHelper is not working for simple intersect ray");
+    }
+
+
+
 }

@@ -61,7 +61,7 @@ public class Plane extends Geometry {
     }//todo: 1) there are no difference between 2 get normals.  2) we not use the point we get hear
 
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         // point in the ray is (point = ray P0 + t * ray dir), now we try to find the t that will return point in our plane
         if(this.p0.equals(ray.getP0()))
             return null;
@@ -69,7 +69,7 @@ public class Plane extends Geometry {
         double planeNormalRayDirDotProduct = this.normal.dotProduct(ray.getDir());
         if(!isZero(planeNormalRayDirDotProduct)) {
             double t = alignZero(this.normal.dotProduct(planeP0MinusRayP0)) / planeNormalRayDirDotProduct; //t = (plane normal * vector (plane p0 - ray p0)) / (plane normal * ray dir)
-            if (t > 0) {
+            if (t > 0 && alignZero(t - maxDistance) <= 0) {
                 Point intersection = ray.getPoint(t);//we return the point intersection between the ray and the plane (point = ray P0 + t * ray dir)
                 if (intersection != ray.getP0()) { // todo: need we this line? only if temp = 0 intersection = p0 of the ray
                     List<GeoPoint> toReturn = new ArrayList<GeoPoint>();

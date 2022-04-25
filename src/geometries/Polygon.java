@@ -92,11 +92,11 @@ public class Polygon extends Geometry {
     }
 
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        List<Point> intersection = this.plane.findIntersections(ray);
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+        List<GeoPoint> intersection = this.plane.findGeoIntersections(ray,maxDistance);
         if(intersection != null) {
             //now we check if the point is inside the polygon
-            Point testP = intersection.get(0);
+            Point testP = intersection.get(0).point;
             Point edgeP1, edgeP2;
             int i, j =0;
             int counter = 0; //counter how many times the horizontal ray crosses any edge.
@@ -114,7 +114,7 @@ public class Polygon extends Geometry {
                     return null;
             }
             if (counter%2!=0) // the point is inside the polygon
-                return List.of(new GeoPoint(this,intersection.get(0)));
+                return List.of(new GeoPoint(this,testP));
         }
         return null;
     }

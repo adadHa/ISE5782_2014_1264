@@ -5,6 +5,8 @@ import primitives.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static primitives.Util.alignZero;
+
 
 public class Sphere extends Geometry{
 
@@ -38,7 +40,7 @@ public class Sphere extends Geometry{
     }
 
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         List<GeoPoint> resultList = new ArrayList<GeoPoint>();
         Vector v = ray.getDir();
         Point p0 = ray.getP0();
@@ -61,11 +63,11 @@ public class Sphere extends Geometry{
             return  null;
         else { // simple case
 
-            if (t1 > 0) {
+            if (t1 > 0 && alignZero(t1 - maxDistance) <= 0) {
                 Point p1 = ray.getPoint(t1);
                 resultList.add(new GeoPoint(this,p1));
             }
-            if (t2 > 0) {
+            if (t2 > 0 && alignZero(t2 - maxDistance) <= 0) {
                 Point p2 = ray.getPoint(t2);
                 resultList.add(new GeoPoint(this,p2));
             }
@@ -74,4 +76,5 @@ public class Sphere extends Geometry{
             return  null;
         }
     }
+
 }

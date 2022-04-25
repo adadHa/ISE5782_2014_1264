@@ -144,4 +144,15 @@ class SphereTest {
         result = sphere.findIntersections(r);
         assertNull(result, "TC21: Ray's line is outside, ray is orthogonal to ray start to sphere's center line. Wrong number of points");
     }
+
+    @Test
+    void findGeoIntersectionsHelper() {
+        double maxDistance = .5;
+        // TC01: There is an intersection, but beyond maxDistance.
+        Ray r = new Ray(new Point(2,0,0), new Vector(-5,-3,0));
+        Sphere sphere = new Sphere(new Point (1, 0, 0), 1d);
+        assertNull(sphere.findGeoIntersectionsHelper(r, maxDistance),
+                "Sphere.findGeoIntersectionsHelper is not working for simple intersect ray");
+
+    }
 }

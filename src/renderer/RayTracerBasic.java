@@ -5,8 +5,13 @@ import lighting.LightSource;
 import primitives.*;
 import scene.Scene;
 
-public class RayTracerBasic extends RayTracerBase{
+import java.util.List;
 
+public class RayTracerBasic extends RayTracerBase{
+    /**
+     * a constant for moving shade rays' head.
+     */
+    private static  final double DELTA = 0.1;
     /**
      * Constractor for Ray Tracer
      *
@@ -14,6 +19,28 @@ public class RayTracerBasic extends RayTracerBase{
      */
     public RayTracerBasic(Scene scene) {
         super(scene);
+    }
+
+    /**
+     *
+     * This function check whther a geopoint is being shaded by
+     * @param gp
+     * @param lightSource
+     * @param l
+     * @param n
+     * @return
+     */
+    private boolean unshaded(GeoPoint gp, LightSource lightSource, Vector l, Vector n){
+        Vector lightDirection = l.scale(-1); // from point to light source
+
+        Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : - DELTA);
+        Point point = gp.point.add(delta);
+        Ray lightRay = new Ray(point, lightDirection);
+
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, lightSource.getDistance(gp.point));
+        if(intersections == null)
+            return true;
+        return false;
     }
 
     /**
@@ -55,9 +82,11 @@ public class RayTracerBasic extends RayTracerBase{
             Vector l = lightSource.getL(geoPoint.point);
             double nl = Util.alignZero(n.dotProduct(l));
             if (nl*nv>0){ //check whether nl and nv have the same sign
-                Color iL = lightSource.getIntensity(geoPoint.point);
-                color = color.add(iL.scale(calcDiffusive(material, nl)),
-                        iL.scale(calcSpecular(material, n, l, nl, v)));
+                if(unshaded(geoPoint,lightSource,l,n)){
+                    Color iL = lightSource.getIntensity(geoPoint.point);
+                    color = color.add(iL.scale(calcDiffusive(material, nl)),
+                            iL.scale(calcSpecular(material, n, l, nl, v)));
+                }
             }
         }
         return color;
