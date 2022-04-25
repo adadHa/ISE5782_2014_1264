@@ -76,10 +76,12 @@ public class Ray {
         if(pointsList.size() == 0)
             return null;
         GeoPoint closestPoint = pointsList.get(0);
-        for (GeoPoint p :
-                pointsList) {
-            if (p.point.distanceSquared(this.p0) < closestPoint.point.distanceSquared(this.p0)){
+        double distanceSquared = closestPoint.point.distanceSquared(this.p0);
+        for (GeoPoint p : pointsList) {
+
+            if (p.point.distanceSquared(this.p0) < distanceSquared){
                 closestPoint = p;
+                distanceSquared = closestPoint.point.distanceSquared(this.p0);
             }
         }
         return closestPoint;

@@ -18,6 +18,27 @@ public class Material {
      */
     public int nShininess = 0;
 
+    public Material setkT(Double3 kT) {
+        this.kT = kT;
+        return this;
+    }
+
+    public Material setkR(Double3 kR) {
+        this.kR = kR;
+        return this;
+    }
+
+    /**
+     * Transparency factor
+     */
+    public Double3 kT = Double3.ZERO;
+
+    /**
+     * Reflection factor
+     */
+    public Double3 kR = Double3.ONE;
+
+
     public double getkD() {
         return kD;
     }

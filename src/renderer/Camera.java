@@ -19,7 +19,7 @@ public class Camera {
     private double height;
 
     private ImageWriter imageWriter;
-    private RayTracerBasic rayTracer;
+    private RayTracerBase rayTracer;
 
     /**
      *
@@ -73,7 +73,7 @@ public class Camera {
      * @param rayTracerBasic
      * @return
      */
-    public Camera setRayTracer(RayTracerBasic rayTracerBasic) {
+    public Camera setRayTracer(RayTracerBase rayTracerBasic) {
         this.rayTracer = rayTracerBasic;
         return this;
     }
@@ -190,11 +190,16 @@ public class Camera {
             throw new MissingResourceException("ImageWriter is null","","");
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
-        for (int i = 0; i < nX; i++){
+        for (int i = 0; i < nX; i+= interval){
             for (int j = 0; j < nY; j++){
-                if (j % interval == 0 ||
-                        i % interval == 0)
+
                     imageWriter.writePixel(j, i, color);
+            }
+        }
+        for (int i = 0; i < nX; i++){
+            for (int j = 0; j < nY; j+= interval){
+
+                imageWriter.writePixel(j, i, color);
             }
         }
     }
