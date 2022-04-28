@@ -52,6 +52,9 @@ class PlaneTest {
         assertEquals(new Vector(0,1,0), pl.getNormal(new Point(0, 0, 0)), "Bad normal to plane");
     }
 
+    /**
+     * Test method for {@link geometries.Plane#findIntersections(Ray)}.
+     */
     @Test
     void findIntersections() {
         // ============ Equivalence Partitions Tests ==============
