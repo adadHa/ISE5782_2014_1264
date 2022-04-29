@@ -50,8 +50,7 @@ public class Point {
     public boolean equals(Object o) {
         if (this == o) return true;
         if(o == null) return false;
-        if (!(o instanceof Point)) return false;
-        Point other = (Point) o;
+        if (!(o instanceof Point other)) return false;
         return this.xyz.equals(other.xyz) && this.xyz.equals(other.xyz) && this.xyz.equals(other.xyz);
     }
 

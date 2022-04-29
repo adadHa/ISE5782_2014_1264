@@ -119,11 +119,11 @@ public class LightsTests {
 	}
 
 	/**
-	 * Produce a picture of a two triangles lighted by a spotlight
+	 * Produce a picture of two triangles lighted by a spotlight
 	 */
 	@Test
 	public void trianglesSpot() {
-		scene2.geometries.add(triangle1, triangle2,new Sphere(new Point(0,0,1100),50));
+		scene2.geometries.add(triangle1.setEmission(new Color(GREEN)), triangle2.setEmission(new Color(RED)),new Sphere(new Point(0,0,1100),50));
 		// the new sphere was added inorder to create the problem of
 		// "shading by a body behind the camera", the Exercise claims that the problem
 		// is achieved also without this addition but I think that it doesn't.

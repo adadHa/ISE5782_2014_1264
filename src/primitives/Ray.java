@@ -4,7 +4,15 @@ import java.util.List;
 import java.util.Objects;
 import geometries.Intersectable.GeoPoint;
 
+import static primitives.Util.isZero;
+
 public class Ray {
+    /**
+     * a constant for moving shade rays' head.
+     */
+    private static  final double DELTA = 0.1;
+
+
     final Point p0;
     final Vector dir;
 
@@ -14,6 +22,19 @@ public class Ray {
             this.dir = v;
         else
             this.dir = v.normalize();
+    }
+
+    /**
+     * Construct ray with delta (according to the normal's vector)
+     * @param head
+     * @param direction
+     * @param normal
+     */
+    public Ray(Point head, Vector direction, Vector normal){
+        this.dir = direction;
+        Vector delta =  normal.scale(direction.dotProduct(normal) > 0 ?
+                DELTA : - DELTA);
+        this.p0 = head.add(delta);
     }
 
     public Vector getDir() {
@@ -85,5 +106,18 @@ public class Ray {
             }
         }
         return closestPoint;
+    }
+
+    /**
+     * check whether the scale operation of ray with t is legal
+     * @param t
+     * @return
+     */
+    public boolean isScaleLegal(double t) {
+        if(isZero(dir.getX() * t) &&
+                isZero(dir.getY() * t) &&
+                isZero(dir.getZ() * t))
+            return false;
+        return true;
     }
 }

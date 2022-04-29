@@ -69,9 +69,11 @@ public class Plane extends Geometry {
         double planeNormalRayDirDotProduct = this.normal.dotProduct(ray.getDir());
         if(!isZero(planeNormalRayDirDotProduct)) {
             double t = alignZero(this.normal.dotProduct(planeP0MinusRayP0)) / planeNormalRayDirDotProduct; //t = (plane normal * vector (plane p0 - ray p0)) / (plane normal * ray dir)
-            if (t > 0 && alignZero(t - maxDistance) <= 0) {
+            if (t > 0 && alignZero(t - maxDistance) <= 0 && ray.isScaleLegal(t)) { // the last part of the cond is a discovery!: isZero(t) don't catch all
+                                                                                                             // cases! if you multiply between two small numbers so each one of them get
+                                                                                                             // false on isZero but their multiplication get 0!!!
                 Point intersection = ray.getPoint(t);//we return the point intersection between the ray and the plane (point = ray P0 + t * ray dir)
-                if (intersection != ray.getP0()) { // todo: need we this line? only if temp = 0 intersection = p0 of the ray
+                if (intersection != ray.getP0()) { // todo: need we this line? only isf temp = 0 intersection = p0 of the ray
                     List<GeoPoint> toReturn = new ArrayList<GeoPoint>();
                     toReturn.add(new GeoPoint(this,intersection));
                     return toReturn;//if the ray is not into the ray (the function will return null), there are maximum one intersection between the ray and the plane
