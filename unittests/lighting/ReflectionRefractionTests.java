@@ -96,7 +96,7 @@ public class ReflectionRefractionTests {
 						.setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60)), //
 				new Sphere(new Point(60, 50, -50), 30d).setEmission(new Color(BLUE)) //
 						.setMaterial(new Material().setKd(0.2).setKs(0.2).setShininess(30).setKt(new Double3(0.6))));
-
+		
 		scene.lights.add(new SpotLight(new Color(700, 400, 400), new Point(60, 50, 0), new Vector(0, 0, -1)) //
 				.setKl(4E-5).setKq(2E-7));
 

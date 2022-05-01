@@ -7,6 +7,8 @@ import scene.Scene;
 
 import java.util.List;
 
+import static primitives.Util.isZero;
+
 public class RayTracerBasic extends RayTracerBase{
 
 
@@ -45,6 +47,14 @@ public class RayTracerBasic extends RayTracerBase{
 
         Ray lightRay = new Ray(gp.point,lightDirection, n);
 
+        if(gp != null){ //
+            Point p = gp.point;
+            if((p.getY() > -0.5 && p.getY() < 0.5)
+                    && (p.getX() > 30 && p.getX() < 31)){
+                int a =1;
+            }
+        }
+
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, lightSource.getDistance(gp.point));
         if(intersections == null)
             return true;
@@ -59,12 +69,9 @@ public class RayTracerBasic extends RayTracerBase{
     @Override
     public Color traceRay(Ray ray) {
         Color pixelColor;
-        GeoPoint closestPoint = findClosestIntersection(ray);
-        if(closestPoint != null){
-            int a = 1;
-        }
-        return closestPoint == null ? scene.background :
-                calcColor(closestPoint, ray);
+        GeoPoint closestGeoPoint = findClosestIntersection(ray);
+        return closestGeoPoint == null ? scene.background :
+                calcColor(closestGeoPoint, ray);
     }
 
     private Color calcColor(GeoPoint gp, Ray ray){
