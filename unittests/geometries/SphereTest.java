@@ -21,6 +21,9 @@ class SphereTest {
                 "Bad normal to sphere");
     }
 
+    /**
+     * Test method for {@link geometries.Sphere#findIntersections(Ray)}.
+     */
     @Test
     void findIntersections() {
         Ray r = new Ray(new Point(2,0,0), new Vector(-5,-3,0));

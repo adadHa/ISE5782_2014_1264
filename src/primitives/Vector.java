@@ -49,6 +49,14 @@ public class Vector extends Point{
         return new Vector(xyz.reduce(length()));
     }
 
+    @Override
+    public String toString() {
+        return "the vector:" +
+                "(" +
+                "x=" + this.xyz.d1 +
+                ", y=" + this.xyz.d2 +
+                ", z=" + this.xyz.d3 + ")";
+    }
 
 }
 
