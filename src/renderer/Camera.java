@@ -172,9 +172,6 @@ public class Camera {
         Color pixelColor;
         for (int i = 0; i < nX; i++){
             for (int j = 0; j < nY; j++){
-                if((i==250)&&(j==250)){
-                    int a = 1;
-                }
                 ray = constructRay(nX, nY, j, i);
                 pixelColor = rayTracer.traceRay(ray);
                 imageWriter.writePixel(j, i, pixelColor);

@@ -35,7 +35,7 @@ public class Geometries extends Intersectable{
                 }
         }
         if(resultList.size() != 0){
-            return  resultList;
+            return resultList;
         }
         return null;
     }
