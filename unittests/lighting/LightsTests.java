@@ -41,7 +41,9 @@ public class LightsTests {
 	private Geometry sphere = new Sphere(new Point(0, 0, -50), 50d) //
 			.setEmission(new Color(BLUE).reduce(2)) //
 			.setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300));
-
+	private Geometry tube1 = new Tube(new Ray(new Point(-20,1,0), new Vector(2,1,1)), 20d);
+	private Geometry tube2 = new Tube(new Ray(new Point(40,5,-5), new Vector(-2,12,-5)), 20d);
+	//private Geometry tube3 = new Tube(new Ray(new Point(11,22,-3), new Vector(12,13,14)), 20d);
 	/**
 	 * Produce a picture of a sphere lighted by a directional light
 	 */
@@ -135,6 +137,28 @@ public class LightsTests {
 				.renderImage() //
 				.writeToImage(); //
 	}
+
+	/**
+	 * Produce a picture of a tube lighted by a spotlight and pointLight
+	 */
+	@Test
+	public void tubeSpot() {
+		scene2.geometries.add(tube1.setEmission(new Color(CYAN)));
+		scene2.geometries.add(tube2.setEmission(new Color(BLUE)));
+		//scene2.geometries.add(tube3.setEmission(new Color(GREEN)));
+
+		scene2.lights.add(new PointLight(spCL,new Point(10,0,0)).setKl(0.001).setKq(0.0001));
+		scene2.lights.add(new SpotLight(trCL, trPL, trDL).setKl(0.001).setKq(0.0001));
+		scene2.lights.add(new PointLight(new Color(0,255,255),new Point(50,60,-100)));
+		scene2.lights.add(new DirectionalLight(new Color(0,123,0),new Vector(-10,1,2)));
+		scene2.lights.add(new PointLight(new Color(125,0,125),new Point(50,30,1000)));
+		ImageWriter imageWriter = new ImageWriter("lightTubeSpot", 500, 500);
+		camera2.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene2)) //
+				.renderImage() //
+				.writeToImage(); //
+	}
+
 
 	@Test
 	public void specularEffect() {

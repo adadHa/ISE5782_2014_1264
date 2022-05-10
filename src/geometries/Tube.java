@@ -46,13 +46,14 @@ public class Tube extends Geometry {
     }
 
     /**
-     * Function for finding intersections points with an infinite tube.
+     * Function for finding intersections geoPoints with an infinite tube.
      * @param ray The ray that we check if it intersects the tube.
-     * @return A list of intersection points, if any.
+     * @return A list of intersection geoPoints, if any.
      */
     @Override
-    public List<Point> findIntersections(Ray ray) {
-        List<Point> toReturn = new ArrayList<>();
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+
+        List<GeoPoint> toReturn = new ArrayList<>();
 
         Point rayP0 = ray.getP0();
 
@@ -100,7 +101,7 @@ public class Tube extends Geometry {
             //toReturn.add(new Vector(rayP0.add(rayDir.scale(-B/(2*A)/*it is t1*/).getHead())).getHead());
             Point intersection = ray.getPoint(t1);
             if(intersection != rayP0) {
-                toReturn.add(intersection);
+                toReturn.add(new GeoPoint(this,intersection));
                 return toReturn;
             }
             return null;
@@ -113,7 +114,7 @@ public class Tube extends Geometry {
             //toReturn.add(new Vector(rayP0.add(rayDir.scale(t2).getHead())).getHead());
             Point intersection = ray.getPoint(t2);
             if(intersection != rayP0) {
-                toReturn.add(intersection);
+                toReturn.add(new GeoPoint(this,intersection));
                 return toReturn;
             }
             return null;
@@ -122,7 +123,7 @@ public class Tube extends Geometry {
             //toReturn.add(new Vector(rayP0.add(rayDir.scale(t1).getHead())).getHead());
             Point intersection = ray.getPoint(t1);
             if(intersection != rayP0) {
-                toReturn.add(intersection);
+                toReturn.add(new GeoPoint(this,intersection));
                 return toReturn;
             }
             return null;
@@ -132,20 +133,15 @@ public class Tube extends Geometry {
             //toReturn.add(new Vector(rayP0.add(rayDir.scale(t2).getHead())).getHead());
             if(!isZero(t1) && t1 > 0) {
                 Point intersectionT1 = ray.getPoint(t1);
-                toReturn.add(intersectionT1);
+                toReturn.add(new GeoPoint(this,intersectionT1));
             }
             if(!isZero(t2) && t2 > 0) {
                 Point intersectionT2 = ray.getPoint(t2);
-                toReturn.add(intersectionT2);
+                toReturn.add(new GeoPoint(this,intersectionT2));
             }
             if(toReturn.size() > 0)
                 return toReturn;
             return null;
         }
-    }
-
-    @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
-        return null;
     }
 }
