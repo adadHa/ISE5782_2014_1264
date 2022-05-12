@@ -157,6 +157,7 @@ public class LightsTests {
 	}
 
 
+
 	@Test
 	public void specularEffect() {
 		Scene scene = new Scene("scene").setAmbientLight(new AmbientLight(new Color(WHITE), new Double3(0.15)));
