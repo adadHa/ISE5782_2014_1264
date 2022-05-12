@@ -144,16 +144,13 @@ public class LightsTests {
 	@Test
 	public void tubeSpot() {
 		scene2.geometries.add(tube1.setEmission(new Color(CYAN)));
-		scene2.geometries.add(tube2.setEmission(new Color(BLUE)));
+		scene2.geometries.add(tube2.setEmission(new Color(BLACK)));
 		//scene2.geometries.add(tube3.setEmission(new Color(GREEN)));
 
-		scene2.lights.add(new PointLight(spCL,new Point(10,0,0)).setKl(0.001).setKq(0.0001));
-		scene2.lights.add(new SpotLight(trCL, trPL, trDL).setKl(0.001).setKq(0.0001));
-		scene2.lights.add(new PointLight(new Color(0,255,255),new Point(50,60,-100)));
-		scene2.lights.add(new DirectionalLight(new Color(0,123,0),new Vector(-10,1,2)));
-		scene2.lights.add(new PointLight(new Color(125,0,125),new Point(50,30,1000)));
+
+		scene2.lights.add(new PointLight(new Color(125,0,125),new Point(20,100,100)));
 		ImageWriter imageWriter = new ImageWriter("lightTubeSpot", 500, 500);
-		camera2.setImageWriter(imageWriter) //
+		camera2.setVPDistance(600).setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene2)) //
 				.renderImage() //
 				.writeToImage(); //
