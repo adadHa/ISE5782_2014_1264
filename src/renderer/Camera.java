@@ -21,6 +21,10 @@ public class Camera {
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
 
+    private boolean AntiAliasingOn;
+    private int eyeRaysAmount = 9;
+
+
     /**
      *
      * @param position
@@ -146,7 +150,7 @@ public class Camera {
         //Ray[][] rayThroughPixel = new Ray[nX][nY];
         //rayThroughPixel[i][j] = new Ray(position, )
 
-        Point pIJ = position.add(vTo.scale(distanceCameraToViewPlane));
+        Point pIJ = position.add(vTo.scale(distanceCameraToViewPlane)); // = Pc
         double rY = this.height / nY; //rY is the size of the vertical rib of the pixel (without the horizontal rib)
         double rX = this.width / nX; //rX is the size of the horizontal rib of the pixel (without teh vertical rib)
 
@@ -172,11 +176,71 @@ public class Camera {
         Color pixelColor;
         for (int i = 0; i < nX; i++){
             for (int j = 0; j < nY; j++){
-                ray = constructRay(nX, nY, j, i);
-                pixelColor = rayTracer.traceRay(ray);
+                if(AntiAliasingOn)
+                    pixelColor = antiAliasing(nX,nY,j,i);
+                else{
+                    ray = constructRay(nX, nY, j, i);
+                    pixelColor = rayTracer.traceRay(ray);
+                }
                 imageWriter.writePixel(j, i, pixelColor);
             }
         }
+        return this;
+    }
+
+    /**
+     * This function implements Anti Aliasing algorithm
+     * @param nX
+     * @param nY
+     * @param j
+     * @param i
+     * @return
+     */
+    private Color antiAliasing(int nX, int nY, int j, int i) {
+        Color sumColors = new Color(0,0,0);
+        Vector vectorToThePixel;
+        Ray rayThroughPixel;
+        Point pIJCenter = position.add(vTo.scale(distanceCameraToViewPlane)); // = Pc
+        double rY = this.height / nY; //rY is the size of the vertical rib of the pixel (without the horizontal rib)
+        double rX = this.width / nX; //rX is the size of the horizontal rib of the pixel (without teh vertical rib)
+        double xJ = (j - (double)(nX - 1)/2) * rX; //xJ is the horizontal distance of our pixel from the central pixel (in pixels)
+        double yI = -(i - (double)(nY - 1)/2) * rY; //yI is the vertical distance of our pixel from the central pixel (in pixels)
+        if (xJ != 0) pIJCenter = pIJCenter.add(vRight.scale(xJ));
+        if (yI != 0) pIJCenter = pIJCenter.add(vUp.scale(yI));
+
+        // make the top-left corner of the pixel
+        Point pIJ;
+        double interval = rX/eyeRaysAmount;
+
+        for (double z = 0; z < eyeRaysAmount; z++)
+        {
+            // move pIJ each iteration to the left of the current row
+            // (the pixel is divided to grid of rows and columns
+            // [interval times rows and interval times columns])
+            if(!isZero(rX/2 - (interval)*z))
+                pIJ = pIJCenter.add(vUp.scale(rX/2 - (interval)*z));
+            else pIJ = pIJCenter;
+            pIJ = pIJ.add(vRight.scale(-rX/2));
+            for (int q = 0; q < eyeRaysAmount; q++){
+                pIJ = pIJ.add(vRight.scale(interval*rX));
+                vectorToThePixel = pIJ.subtract(this.position);
+                rayThroughPixel = new Ray(this.position, vectorToThePixel);
+                sumColors = sumColors.add(rayTracer.traceRay(rayThroughPixel));
+            }
+        }
+        // calculate the average color (there are eyeRaysAmount^2 sample rays);
+        Color avarageColor = sumColors.scale((double) 1/(eyeRaysAmount*eyeRaysAmount));
+        return avarageColor;
+    }
+
+    /**
+     * Turn on Anti Aliasing
+     * @param eyeRaysAmount - set the amount of eye rays to produce (81 means 81X81)
+     * @return
+     */
+    public Camera setAntiAliasingOn(int eyeRaysAmount) {
+        this.eyeRaysAmount = eyeRaysAmount;
+        AntiAliasingOn = true;
         return this;
     }
 
