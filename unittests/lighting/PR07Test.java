@@ -32,25 +32,26 @@ public class PR07Test {
 		/* //more option, need to fix, we see the bird from the front
 		Camera camera = new Camera(new Point(-50,-50,0), new Vector(1,1,0), new Vector(0,0,1)) //
 				.setVPSize(60,60).setVPDistance(40);*/
-
+		Material mateBirdSkin = new Material().setKt(0.2).setShininess(30).setKs(0.1).setKd(0.7);
+		Material mateEye = new Material().setKt(1).setKs(0.5).setKd(0.01);
 		scene.setAmbientLight(new AmbientLight(new Color(20, 150, 240), new Double3(0.1)));//color of sky, less or more
 
 		scene.geometries.add(
 				//body of the bird
 				new Sphere(new Point(2,2,-3), 14)
-						.setEmission(new Color(230,120,20)).setMaterial(new Material().setKt(0.2).setShininess(30)),
+						.setEmission(new Color(230,120,20)).setMaterial(mateBirdSkin),
 				//head of the bird
 				new Sphere(new Point(-14,0,2),10)
-						.setEmission(new Color(230,120,20)).setMaterial(new Material().setKt(0.05)),
+						.setEmission(new Color(230,120,20)).setMaterial(mateBirdSkin.setKt(0.05)),
 				//eyes of the bird
 				new Sphere(new Point(-18,-9,4.5), 1)
 						.setEmission(new Color(0,0,0)),
 				new Sphere(new Point(-19, -7, 4.5),2)
-						.setEmission(new Color(255,255,220)).setMaterial(new Material().setKt(1)),
+						.setEmission(new Color(255,255,220)).setMaterial(mateEye),
 				new Sphere(new Point(-18,9,4.5),1)
 						.setEmission(new Color(0,0,0)),
 				new Sphere(new Point(-19,7,4.5),2)
-						.setEmission(new Color(255,255,220)).setMaterial(new Material().setKt(1)),
+						.setEmission(new Color(255,255,220)).setMaterial(mateEye),
 				//beak of the bird (pyramid, other did not succeed to me)
 
 				//new Triangle(new Point(-22,0,0), new Point(-19,0,-6), new Point(-35,0,-12))
@@ -80,9 +81,11 @@ public class PR07Test {
 				new Plane(new Point(-8,-13,-25), new Point(-8,13,-25), new Point(1,1,-25))
 						.setEmission(new Color(140,50,40)),
 				new Plane(new Point(-15,10,-25), new Point(-15,-10,-25), new Point(-35,0,-12))
-						.setEmission(new Color(0, 20, 130)).setMaterial(new Material().setKr(0.5)),
+						.setEmission(new Color(0, 20, 255)).setMaterial(new Material().setKr(0.5)),
 				new Tube(new Ray(new Point(-15,10,-25), new Vector(0,-250,0)), 2)
-						.setEmission(new Color(77,0,0)));
+						.setEmission(new Color(77,0,0)),
+				new Sphere(new Point(-35,0,-12), 2)
+						.setEmission(new Color(0,0,100)).setMaterial(new Material().setKt(0.5)));
 
 				/*new Sphere(new Point(0,0,100),100).setEmission(new Color(BLUE)),
 				new Polygon(new Point(500,-500,0), new Point(-500,-500,0),new Point(-500,500,0),new Point(500,500,0))
@@ -101,15 +104,19 @@ public class PR07Test {
 				.setKl(0.00001).setKq(0.000005));
 		scene.lights.add(new SpotLight(new Color(0, 400, 400), new Point(-500, -500, -100), new Vector(1,1,10)) //
 				.setKl(0.00001).setKq(0.000005));
-		scene.lights.add(new PointLight(new Color(50,150,150), new Point(-500,-500,-500)).setKl(0.000005)); //*/
-		scene.lights.add(new PointLight(new Color(800,500,250), new Point(-19,9,4.5)).setKq(0.001));
-		scene.lights.add(new PointLight(new Color(800,500,250), new Point(-19,-9,4.5)).setKq(0.001));
-		scene.lights.add(new SpotLight(new Color(800,500,250), new Point(-20,20,30), new Vector(22,-18,-35)).setKl(0.001).setKq(0.0001));
-		scene.lights.add(new DirectionalLight(new Color(200, 200, 0), new Vector(22, -18, -35)));
+		scene.lights.add(new PointLight(new Color(50,150,150), new Point(-500,-500,-500)).setKl(0.000005)); //
+		for(int i=0  ;i<360 ; i++ ){
+			scene.lights.add(new DirectionalLight(new Color(123,255,0),new Point(Math.cos(i),Math.sin(i),Math.sin(i)).subtract(new Point(2,2,-3))));
+		}*/
+
+		scene.lights.add(new PointLight(new Color(255,255,255), new Point(0,0,100)).setKl(0.001).setKq(0.0001));
+		//scene.lights.add(new PointLight(new Color(800,500,250), new Point(-19,-9,4.5)).setKq(0.001));
+		//scene.lights.add(new SpotLight(new Color(800,500,250), new Point(-20,20,30), new Vector(22,-18,-35)).setKl(0.001).setKq(0.0001));
+		//scene.lights.add(new DirectionalLight(new Color(200, 200, 0), new Vector(22, -18, -35)));
 		ImageWriter imageWriter = new ImageWriter("PR07", 500, 500);
 		camera.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene)) //
-				.renderImage() //
+					.renderImage() //
 				.writeToImage();
 	}
 
