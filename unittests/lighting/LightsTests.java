@@ -143,9 +143,10 @@ public class LightsTests {
 	 */
 	@Test
 	public void tubeSpot() {
-		scene2.geometries.add(tube1.setEmission(new Color(CYAN)));
-		scene2.geometries.add(tube2.setEmission(new Color(BLACK)));
-		//scene2.geometries.add(tube3.setEmission(new Color(GREEN)));
+		Material material = new Material().setKd(0.7).setKs(0.3);
+		scene2.geometries.add(tube1.setEmission(new Color(CYAN)).setMaterial(material));
+		scene2.geometries.add(tube2.setEmission(new Color(GREEN)).setMaterial(material));
+		scene2.geometries.add(new Tube(new Ray(new Point(50,0,0), new Vector(2,2,-5)), 15) .setEmission(new Color(BLUE)).setMaterial(material.setKd(0.3).setKs(0.7)));
 
 
 		scene2.lights.add(new PointLight(new Color(125,0,125),new Point(20,100,100)));
