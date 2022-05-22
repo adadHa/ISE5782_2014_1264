@@ -17,6 +17,25 @@ public class Material {
      * shininess scale factor of the material
      */
     public int nShininess = 0;
+    /**
+     * glossiness constant of the material
+     */
+    public double glossiness = 0;
+
+    public Material setGlossiness(double glossiness) {
+        this.glossiness = glossiness;
+        return this;
+    }
+
+    public Material setBlurriness(double blurriness) {
+        this.blurriness = blurriness;
+        return this;
+    }
+
+    /**
+     * blurrier constant of the material
+     */
+    public double blurriness = 0;
 
     public Material setKt(Double3 kT) {
         this.kT = kT;

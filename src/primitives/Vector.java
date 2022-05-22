@@ -1,5 +1,7 @@
 package primitives;
 
+import static primitives.Util.isZero;
+
 public class Vector extends Point{
 
     public Vector(double x, double y, double z) {
@@ -47,6 +49,45 @@ public class Vector extends Point{
 
     public  Vector normalize(){
         return new Vector(xyz.reduce(length()));
+    }
+
+    /**
+     * This function rotates a vector around unit vector
+     * @param axis
+     * @param angle
+     * @return
+     * code from https://stackoverflow.com/questions/31225062/rotating-a-vector-by-angle-and-axis-in-java
+     */
+    public Vector rotate(Vector axis, double angle){
+        double x, y, z;
+        double u, v, w;
+        x=getX();y=getY();z=getZ();
+        u=axis.getX();v=axis.getY();w=axis.getZ();
+        double xPrime = u*(u*x + v*y + w*z)*(1d - Math.cos(angle))
+                + x*Math.cos(angle)
+                + (-w*y + v*z)*Math.sin(angle);
+        double yPrime = v*(u*x + v*y + w*z)*(1d - Math.cos(angle))
+                + y*Math.cos(angle)
+                + (w*x - u*z)*Math.sin(angle);
+        double zPrime = w*(u*x + v*y + w*z)*(1d - Math.cos(angle))
+                + z*Math.cos(angle)
+                + (-v*x + u*y)*Math.sin(angle);
+        return new Vector(xPrime, yPrime, zPrime);
+    }
+
+    public Vector findPrependicular(){
+        double a, b, c;
+        a = getX(); b = getY(); c = getZ();
+        if(!isZero(c)){
+            return new Vector(1,1,-(a+b)/c).normalize();
+        }
+        else if(!isZero(b))
+        {
+            return new Vector(1,-(a+c)/b,1).normalize();
+        }
+        else{
+            return new Vector(-(b+c)/a,1,1).normalize();
+        }
     }
 
     @Override

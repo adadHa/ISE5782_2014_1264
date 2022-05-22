@@ -4,22 +4,25 @@ package renderer;
 import primitives.*;
 
 import scene.Scene;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import geometries.Intersectable.GeoPoint;
 import lighting.LightSource;
 import static primitives.Util.*;
 
-/**
- * This class extends RayTracerBas and implement the class
- *
- * @author Hillel Kroitoro, Yona Orunov
- */
+
 public class RayTracerBasic extends RayTracerBase {
 
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
     private static final Double3 INITIAL_K = new Double3(1.0);
+
+    // super sampling reflection
+    private boolean isReflectionSuperSamplingOn = false;
+    private final double distanceFromTargetArea = 10000;
+    private double glossyRaysAmount = 1;
 
     /**
      * Construct RayTracerBasic base with scene and uses RayTracerBase constructor
@@ -41,14 +44,20 @@ public class RayTracerBasic extends RayTracerBase {
 private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
     Color color = Color.BLACK;
     Double3 kr = gp.geometry.getMaterial().kR, kkr = kr.product(k);
+    double glossiness = gp.geometry.getMaterial().glossiness;
+    double blurriness = gp.geometry.getMaterial().blurriness;
     Vector n = gp.geometry.getNormal(gp.point);
     Vector v = ray.getDir();
     if (!kr.equals(Double3.ZERO) && !kkr.lowerThan(MIN_CALC_COLOR_K)) {
         Ray reflectedRay = constructReflectedRay(gp, v, n);
+        List<Ray> reflectedRays = constructMultiSamplingRays(reflectedRay, glossyRaysAmount,
+                                                            distanceFromTargetArea, glossiness);
+        color = color.add(calcAverageColor(reflectedRays,level-1,kkr).scale(kr));
+        /*
         GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
         color = (reflectedPoint != null) ?
                 color.add(calcColor(reflectedPoint, reflectedRay, level - 1, kkr).scale(kr))
-                : color;
+                : color;*/
     }
 
     Double3 kt = gp.geometry.getMaterial().kT, kkt = kt.product(k);
@@ -61,6 +70,7 @@ private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
     }
     return color;
 }
+
 
     /**
      * This function calculates the reflected ray according to
@@ -237,5 +247,58 @@ private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
             }
         }
         return ktr;
+    }
+
+    public RayTracerBase setReflectionSuperSamplingOn(double glossyRaysAmount){
+        isReflectionSuperSamplingOn = true;
+        this.glossyRaysAmount = glossyRaysAmount;
+        return this;
+    }
+
+    private List<Ray> constructMultiSamplingRays(Ray ray, double raysAmount, double distanceFromTargetArea, double targetAreaSize) {
+        ArrayList<Ray> resultList = new ArrayList<Ray>();
+        resultList.add(ray);
+        if(raysAmount == 1)
+            return resultList;
+        Point targetAreaCenter = ray.getPoint(distanceFromTargetArea);
+        double randomRadius,randomAngle;
+        Point point;
+        Vector rotatedVector, prependiculr1 = ray.getDir().findPrependicular(),
+                prependicular2 = prependiculr1.crossProduct(ray.getDir());
+        for(int i = 1; i < raysAmount+1; i++){
+            randomRadius = random(0,targetAreaSize);
+            randomAngle = random(0,360);
+            rotatedVector = prependiculr1.rotate(prependicular2,randomAngle);
+            point = targetAreaCenter.add(rotatedVector);
+            resultList.add(new Ray(ray.getP0(), point.subtract(ray.getP0())));
+        }
+        return resultList;
+    }
+
+    /**
+     * This method get a list of rays and return the average color of the intersection points of the rays
+     * with the scene
+     * @param reflectedRays
+     * @param level
+     * @param k
+     * @return
+     */
+    private Color calcAverageColor(List<Ray> reflectedRays, int level, Double3 k) {
+        Color sumColor = new Color(0,0,0);
+        Color color;
+        GeoPoint intersection;
+        int counter = 0;
+        for(Ray ray : reflectedRays){
+            intersection = findClosestIntersection(ray);
+            if(intersection != null)
+            {
+                color = calcColor(intersection,ray,level,k);
+                sumColor = sumColor.add(color);
+                counter++;
+            }
+        }
+        if(counter != 0)
+            return sumColor.scale(1/counter);
+        return sumColor;
     }
 }

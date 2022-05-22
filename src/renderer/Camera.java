@@ -8,6 +8,7 @@ import primitives.Vector;
 import java.util.MissingResourceException;
 
 import static primitives.Util.isZero;
+import static primitives.Util.random;
 
 public class Camera {
     private Point position;
@@ -24,6 +25,11 @@ public class Camera {
     private boolean AntiAliasingOn;
     private int eyeRaysAmount = 9;
 
+    // Depth Of Field
+    private boolean isDepthOfFieldOn = false;
+    private double apertureRadius = 0;
+    private double focalDistance;
+    private  double focalRaysAmount = 20;
 
     /**
      *
@@ -217,7 +223,10 @@ public class Camera {
             // move pIJ each iteration to the left of the current row
             // (the pixel is divided to grid of rows and columns
             // [interval times rows and interval times columns])
-            if(!isZero(rX/2 - (interval)*z))
+            if(!isZero(
+
+
+                    rX/2 - (interval)*z))
                 pIJ = pIJCenter.add(vUp.scale(rX/2 - (interval)*z));
             else pIJ = pIJCenter;
             pIJ = pIJ.add(vRight.scale(-rX/2));
@@ -273,5 +282,45 @@ public class Camera {
      */
     public void writeToImage() {
         imageWriter.writeToImage();
+    }
+
+    /**
+     * Turn on Depth Of Field
+     * @param apertureRadius - set the radius of the aperture.
+     * @param focalDistance
+     * @param focalRaysAmount
+     * @return
+     */
+    public void setDepthOfFieldOn(double apertureRadius, double focalDistance, double focalRaysAmount) {
+        isDepthOfFieldOn = true;
+        this.apertureRadius = apertureRadius;
+        this.focalDistance = focalDistance;
+        this.focalRaysAmount = focalRaysAmount;
+    }
+
+
+    private void depthOfField(Ray ray){
+        Point focalPoint = ray.getPoint(focalDistance);
+        double randomRadius,randomAngle;
+        Point pointOnFocalPlane;
+        Vector rotatedVector;
+        for(int i = 0; i < focalRaysAmount; i++){
+            randomRadius = random(0,focalDistance);
+            randomAngle = random(0,360);
+            rotatedVector = vUp.rotate(vRight,randomAngle);
+            pointOnFocalPlane = focalPoint.add(rotatedVector);
+
+        }
+    }
+
+    private Point getCenterPixel(int nX, int nY, int j, int i){
+        Point pIJCenter = position.add(vTo.scale(distanceCameraToViewPlane)); // = Pc
+        double rY = this.height / nY; //rY is the size of the vertical rib of the pixel (without the horizontal rib)
+        double rX = this.width / nX; //rX is the size of the horizontal rib of the pixel (without teh vertical rib)
+        double xJ = (j - (double)(nX - 1)/2) * rX; //xJ is the horizontal distance of our pixel from the central pixel (in pixels)
+        double yI = -(i - (double)(nY - 1)/2) * rY; //yI is the vertical distance of our pixel from the central pixel (in pixels)
+        if (xJ != 0) pIJCenter = pIJCenter.add(vRight.scale(xJ));
+        if (yI != 0) pIJCenter = pIJCenter.add(vUp.scale(yI));
+        return pIJCenter;
     }
 }
