@@ -21,7 +21,7 @@ public class RayTracerBasic extends RayTracerBase {
 
     // super sampling reflection
     private boolean isReflectionSuperSamplingOn = false;
-    private final double distanceFromTargetArea = 10000;
+    private final double distanceFromTargetArea = 100;
     private double glossyRaysAmount = 1;
 
     /**
@@ -53,8 +53,7 @@ private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
         List<Ray> reflectedRays = constructMultiSamplingRays(reflectedRay, glossyRaysAmount,
                                                             distanceFromTargetArea, glossiness);
         color = color.add(calcAverageColor(reflectedRays,level-1,kkr).scale(kr));
-        /*
-        GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
+        /*GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
         color = (reflectedPoint != null) ?
                 color.add(calcColor(reflectedPoint, reflectedRay, level - 1, kkr).scale(kr))
                 : color;*/
@@ -227,7 +226,7 @@ private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
      * @param geoPoint is the point
      * @param lS       is the light source
      * @param l        is the vector from the light source to the point
-     * @param n        is the normal vector the the point
+     * @param n        is the normal vector the point
      * @return the transpareced light.
      */
     private Double3 transparency(Vector l, Vector n,GeoPoint geoPoint, LightSource lS) {
@@ -258,18 +257,18 @@ private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
     private List<Ray> constructMultiSamplingRays(Ray ray, double raysAmount, double distanceFromTargetArea, double targetAreaSize) {
         ArrayList<Ray> resultList = new ArrayList<Ray>();
         resultList.add(ray);
-        if(raysAmount == 1)
+        if(raysAmount == 0)
             return resultList;
         Point targetAreaCenter = ray.getPoint(distanceFromTargetArea);
         double randomRadius,randomAngle;
         Point point;
         Vector rotatedVector, prependiculr1 = ray.getDir().findPrependicular(),
                 prependicular2 = prependiculr1.crossProduct(ray.getDir());
-        for(int i = 1; i < raysAmount+1; i++){
+        for(int i = 1; i < raysAmount; i++){
             randomRadius = random(0,targetAreaSize);
             randomAngle = random(0,360);
             rotatedVector = prependiculr1.rotate(prependicular2,randomAngle);
-            point = targetAreaCenter.add(rotatedVector);
+            point = targetAreaCenter.add(rotatedVector.scale(randomRadius));
             resultList.add(new Ray(ray.getP0(), point.subtract(ray.getP0())));
         }
         return resultList;
@@ -287,7 +286,7 @@ private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
         Color sumColor = new Color(0,0,0);
         Color color;
         GeoPoint intersection;
-        int counter = 0;
+        double counter = 0;
         for(Ray ray : reflectedRays){
             intersection = findClosestIntersection(ray);
             if(intersection != null)
@@ -298,7 +297,7 @@ private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
             }
         }
         if(counter != 0)
-            return sumColor.scale(1/counter);
+            sumColor = sumColor.scale((double) (1/counter));
         return sumColor;
     }
 }
