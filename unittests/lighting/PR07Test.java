@@ -20,15 +20,26 @@ import static java.awt.Color.*;
  * @author dzilb
  */
 public class PR07Test {
-	private Scene scene = new Scene("Test scene").setBackground(new Color(120,140,255));
+	private final Scene scene = new Scene("Test scene").setBackground(new Color(120,140,255));
 
 	@Test
 	void PR07Test() {
 			//Camera camera = new Camera(new Point(-2500, -2500, 800), new Vector(1, 1, 0), new Vector(0, 0, 1)) //
 			//	.setVPSize(2500, 2500).setVPDistance(3000); //
 		//first option: we see the bird from the back:
-		  Camera camera = new Camera(new Point(35,50,0), new Vector(-1,-1,0), new Vector(0,0,1)) //
-				.setVPSize(60,60).setVPDistance(40);
+		  Camera camera = new Camera(
+				  new Point(35,50,0), //position
+				  new Vector(-1,-1,0), //vTo
+				  new Vector(0,0,1)) //vUp
+				.setVPSize(60,60)
+				  //.setAntiAliasingOn(20)
+				  .setVPDistance(40)
+				  .moveNearAway(40)
+				  .moveUpDown(40)
+				  .moveRightLeft(10)
+				  .spinAroundVRight(-40)
+				  .spinAroundVTo(40)
+				  .spinAroundVUp(-20);
 		/* //more option, need to fix, we see the bird from the front
 		Camera camera = new Camera(new Point(-50,-50,0), new Vector(1,1,0), new Vector(0,0,1)) //
 				.setVPSize(60,60).setVPDistance(40);*/
@@ -89,6 +100,8 @@ public class PR07Test {
 				new Sphere(new Point(-35,0,-11), 2)
 						.setEmission(new Color(0,0,100)).setMaterial(new Material().setKt(0.5).setKs(0.5)));
 
+				//scene.geometries.add(new Triangle(new Point(-21,-3,8), new Point(-24,-1,3), new Point(-30,0,20)).setEmission(new Color(255,26,140)).setMaterial(new Material().setShininess(30).setKd(0.5).setKs(0.8)),
+				//new Sphere(new Point(-30,0,20), 2).setEmission(new Color(255,255,255)).setMaterial(new Material().setKt(0.7).setKd(0.3).setKs(0.3)));
 				/*new Sphere(new Point(0,0,100),100).setEmission(new Color(BLUE)),
 				new Polygon(new Point(500,-500,0), new Point(-500,-500,0),new Point(-500,500,0),new Point(500,500,0))
 						.setEmission(new Color(GRAY)).setMaterial(new Material().setKr(0.9)),
@@ -110,7 +123,7 @@ public class PR07Test {
 		for(int i=0  ;i<360 ; i++ ){
 			scene.lights.add(new DirectionalLight(new Color(123,255,0),new Point(Math.cos(i),Math.sin(i),Math.sin(i)).subtract(new Point(2,2,-3))));
 		}*/
-
+		//scene.lights.add(new PointLight(new Color(255,255,255), new Point(-30,0,20)).setKq(0.00001).setKl(0.00001));
 		scene.lights.add(new PointLight(new Color(255,255,255), new Point(0,0,10)).setKl(0.00001).setKq(0.0001));
 		//scene.lights.add(new PointLight(new Color(800,500,250), new Point(-19,-9,4.5)).setKq(0.001));
 		scene.lights.add(new SpotLight(new Color(800,500,250), new Point(-80,20,20), new Vector(82,-18,-25)).setKl(0.1).setKq(0.0001));
@@ -118,10 +131,10 @@ public class PR07Test {
 		scene.lights.add(new DirectionalLight(new Color(100, 150, 150), new Vector(22, -18, -35)));
 		//scene.lights.add(new DirectionalLight(new Color(100,150,150), new Vector(17,12,20)));
 
-		ImageWriter imageWriter = new ImageWriter("PR07", 500, 500);
+		ImageWriter imageWriter = new ImageWriter("PR07 - move camera", 500, 500);
 		camera.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene)) //
-					.renderImage() //
+				.renderImage() //
 				.writeToImage();
 	}
 

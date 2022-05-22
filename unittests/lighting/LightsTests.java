@@ -201,6 +201,19 @@ public class LightsTests {
 				.writeToImage(); //
 	}
 
+    @Test
+    public void cylinderSpot() {
+        Material material = new Material().setKd(0.7).setKs(0.3);
+        scene2.geometries.add(new Cylinder(new Ray(new Point(0,30,10), new Vector(-20,-2,-20)), 20, 150).setEmission(new Color(CYAN)).setMaterial(material.setKd(0.3).setKs(0.7)));
+        scene2.geometries.add(new Tube(new Ray(new Point(50,0,0), new Vector(2,2,-5)), 15) .setEmission(new Color(BLUE)).setMaterial(material.setKd(0.3).setKs(0.7)));
 
+
+        scene2.lights.add(new PointLight(new Color(125,0,125),new Point(20,100,100)));
+        ImageWriter imageWriter = new ImageWriter("lightCylinderSpot", 500, 500);
+        camera2.setVPDistance(600).setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(scene2)) //
+                .renderImage() //
+                .writeToImage(); //
+    }
 
 }

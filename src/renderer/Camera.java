@@ -7,6 +7,7 @@ import primitives.Vector;
 
 import java.util.MissingResourceException;
 
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
 public class Camera {
@@ -273,5 +274,134 @@ public class Camera {
      */
     public void writeToImage() {
         imageWriter.writeToImage();
+    }
+
+
+    /**
+     * spin the camera up and down around vRight vector
+     * @param angle in degrees (how many we need move)
+     * @return
+     */
+    public Camera spinAroundVRight(double angle){
+        if(angle >= 360){
+            angle = angle % 360;
+        }
+        if(angle > 180){
+            angle = angle - 180; //now all the angles between -180 and 180
+        }
+        //we are move only the vUp and the vTo vectors
+        double angleRad = Math.toRadians(angle);
+        double sinA = Math.sin(angleRad);
+        double cosA = Math.cos(angleRad);
+        if(isZero(cosA)){ //if angle is 90 or -90 degrees, we move the camera 90 degrees upper
+            vTo = vUp.scale(sinA); //sin (90) = 1, sin (-90) = -1, vTo = vUp or vTo = -vUp
+        }
+        else if(isZero(sinA)){ //if angle is 0 or 180 degrees
+            vTo = vTo.scale(cosA); //cos(0) = 1, cos(180) = -1, vTo = vTo or vTo = -vTo
+        }
+        else{ //spin around the vTo vector according to the Rodrigues' rotation formula (rotation V = v*cosA + (K x v)*sinA + K*(K*V)(1-cosA), k is vRight in our situation
+            vTo = vTo.scale(cosA).add(vRight.crossProduct(vTo).scale(sinA));
+        }
+        vUp = vRight.crossProduct(vTo).normalize(); //change the vUp vector according to the new vTo (vUp is perpendicular to vTo and vRight)
+
+        return this;
+    }
+
+    /**
+     * spin the camera left and right around vUp vector
+     * @param angle in degrees (how many we need move)
+     * @return
+     */
+    public Camera spinAroundVUp(double angle){
+        if(angle >= 360){
+            angle = angle % 360;
+        }
+        if(angle > 180){
+            angle = angle - 180; //now all the angles between -180 and 180
+        }
+        //we are move only the vRight and the vTo vectors
+        double angleRad = Math.toRadians(angle);
+        double sinA = Math.sin(angleRad);
+        double cosA = Math.cos(angleRad);
+        if(isZero(cosA)){ //if angle is 90 or -90 degrees, we move the camera 90 degrees
+            vRight = vTo.scale(sinA); //sin (90) = 1, sin (-90) = -1, vRight = vTo or vRight = -vTo
+        }
+        else if(isZero(sinA)){ //if angle is 0 or 180 degrees
+            vRight = vRight.scale(cosA); //cos(0) = 1, cos(180) = -1, vRight = vRight or vRight = -vRight
+        }
+        else{ //spin around the vTo vector according to the Rodrigues' rotation formula (rotation V = v*cosA + (K x v)*sinA + K*(K*V)(1-cosA), k is vUp in our situation
+            vRight = vRight.scale(cosA).add(vUp.crossProduct(vRight).scale(sinA));
+        }
+        vTo = vUp.crossProduct(vRight).normalize(); //change the vTo vector according to the new vRight (vTo is perpendicular to vUp and vRight)
+
+        return this;
+    }
+
+    /**
+     * spin the camera around vTo vector
+     * @param angle in degrees (how many we need move)
+     * @return
+     */
+    public Camera spinAroundVTo(double angle){
+        if(angle >= 360){
+            angle = angle % 360;
+        }
+        if(angle > 180){
+            angle = angle - 180; //now all the angles between -180 and 180
+        }
+        //we are moving only the vUp and the vRight vectors
+        double angleRad = Math.toRadians(angle);
+        double sinA = Math.sin(angleRad);
+        double cosA = Math.cos(angleRad);
+        if(isZero(cosA)){ //if angle is 90 or -90 degrees, we move the camera 90 degrees
+            vUp = vRight.scale(sinA); //sin (90) = 1, sin (-90) = -1, vUp = vRight or vUp = -vRight
+        }
+        else if(isZero(sinA)){ //if angle is 0 or 180 degrees
+            vUp = vUp.scale(cosA); //cos(0) = 1, cos(180) = -1, vUp = vUp or vUp = -vUp
+        }
+        else{ //spin around the vTo vector according to the Rodrigues' rotation formula (rotation V = v*cosA + (K x v)*sinA + K*(K*V)(1-cosA), k is vTo in our situation
+            vUp = vUp.scale(cosA).add(vTo.crossProduct(vUp).scale(sinA));
+        }
+        vRight = vTo.crossProduct(vUp).normalize(); //change the vTo vector according to the new vRight (vTo is perpendicular to vUp and vRight)
+
+        return this;
+    }
+
+
+    /**
+     * move the camera up or down
+     * @param distance how many the camera goes up (it can be minus and go down)
+     * @return
+     */
+    public Camera moveUpDown(double distance){
+        if(!isZero(distance)) {
+            position = position.add(vUp.scale(distance));
+        }
+        return this;
+    }
+
+    /**
+     * move the camera right or left
+     * @param distance how many the camera goes right (can be minus and go left)
+     * @return
+     */
+    public Camera moveRightLeft(double distance){
+        if(!isZero(distance)) {
+            position = position.add(vRight.scale(distance));
+        }
+        return this;
+    }
+
+
+    /**
+     * move the camera near or away (from the objects)
+     * @param distance how many the camera goes forward (can be minus and go backward)
+     * @return
+     */
+    public Camera moveNearAway(double distance){
+        if(!isZero(distance)) {
+            position = position.add(vTo.scale(distance));
+        }
+        return this;
     }
 }

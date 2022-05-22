@@ -4,7 +4,10 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static primitives.Util.alignZero;
 
 public class Cylinder extends Tube{
     private final double height;
@@ -37,5 +40,22 @@ public class Cylinder extends Tube{
     @Override
     public List<Point> findIntersections(Ray ray) {
         return null;
+    }
+
+
+    @Override
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+        List<GeoPoint> toReturn = new ArrayList<>();
+        List<GeoPoint> optionalGPoints = super.findGeoIntersectionsHelper(ray, maxDistance);  //take the intersection from the tube
+        if (optionalGPoints != null)
+            for (GeoPoint geoPoint : optionalGPoints) {
+                double distance = alignZero(geoPoint.point.subtract(this.getAxisRay().getP0()).dotProduct(this.getAxisRay().getDir()));
+                if (distance > 0 && distance <= this.height)
+                    toReturn.add(geoPoint);
+            }
+
+        if (toReturn.size() == 0)
+            return null;
+        return toReturn;
     }
 }

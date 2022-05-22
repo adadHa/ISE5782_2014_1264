@@ -11,7 +11,7 @@ public class Vector extends Point{
     public Vector(Double3 v) {
         super(v);
         if (xyz.equals(Double3.ZERO)){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("vector 0 exception");
         }
     }
     public Vector add(Vector another) {
