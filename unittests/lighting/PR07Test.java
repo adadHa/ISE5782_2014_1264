@@ -20,19 +20,32 @@ import static java.awt.Color.*;
  * @author dzilb
  */
 public class PR07Test {
-	private Scene scene = new Scene("Test scene").setBackground(new Color(120,140,255));
+	private final Scene scene = new Scene("Test scene").setBackground(new Color(120,140,255));
 
 	@Test
 	void PR07Test() {
 			//Camera camera = new Camera(new Point(-2500, -2500, 800), new Vector(1, 1, 0), new Vector(0, 0, 1)) //
 			//	.setVPSize(2500, 2500).setVPDistance(3000); //
 		//first option: we see the bird from the back:
-		  Camera camera = new Camera(new Point(35,50,0), new Vector(-1,-1,0), new Vector(0,0,1)) //
-				.setVPSize(60,60).setVPDistance(40);
+		  Camera camera = new Camera(
+				  new Point(35,50,0), //position
+				  new Vector(-1,-1,0), //vTo
+				  new Vector(0,0,1)) //vUp
+				.setVPSize(60,60)
+				  //.setAntiAliasingOn(20)
+				  .setVPDistance(40)
+				  .moveNearAway(40)
+				  .moveUpDown(40)
+				  .moveRightLeft(10)
+				  .spinAroundVRight(-40)
+				  .spinAroundVTo(40)
+				  .spinAroundVUp(-20);
 		/* //more option, need to fix, we see the bird from the front
 		Camera camera = new Camera(new Point(-50,-50,0), new Vector(1,1,0), new Vector(0,0,1)) //
 				.setVPSize(60,60).setVPDistance(40);*/
 		Material mateBirdSkin = new Material().setKt(0.2).setShininess(30).setKs(0.1).setKd(0.7);
+		Material mateBirdOrgans = new Material().setKd(0.7).setShininess(10);
+		Material mateBirdBeak = new Material().setKr(0.001).setKs(0.2).setKd(0.5);
 		Material mateEye = new Material().setKt(1).setKs(0.5).setKd(0.01);
 		scene.setAmbientLight(new AmbientLight(new Color(20, 150, 240), new Double3(0.1)));//color of sky, less or more
 
@@ -57,36 +70,38 @@ public class PR07Test {
 				//new Triangle(new Point(-22,0,0), new Point(-19,0,-6), new Point(-35,0,-12))
 				//		.setEmission(new Color(130,50,10)),
 				new Triangle(new Point(-20,-4,0), new Point(-17,-2,-5.5), new Point(-35,0,-12))
-						.setEmission(new Color(130,50,10)),
+						.setEmission(new Color(130,50,10)).setMaterial(mateBirdBeak),
 				new Triangle(new Point(-20,4,0), new Point(-17,2,-5.5), new Point(-35,0,-12))
-						.setEmission(new Color(130,50,10)),
+						.setEmission(new Color(130,50,10)).setMaterial(mateBirdBeak),
 				new Triangle(new Point(-20,-4,0), new Point(-20,4,0), new Point(-35,0,-12))
-						.setEmission(new Color(130,50,10)),
-				new Triangle(new Point(-17,-2,-5.5), new Point(-17,2,-5.5), new Point(-35,0,-12))
-						.setEmission(new Color(130,50,10)),
+						.setEmission(new Color(130,50,10)).setMaterial(mateBirdBeak),
+				new Triangle(new Point(-17,-2,-5.5), new Point(-17,2,-5.5), new Point(-32,0,-13))
+						.setEmission(new Color(130,50,10)).setMaterial(mateBirdBeak),
 				//legs of the bird
 				new Triangle(new Point(5,-7,-13), new Point(6,-6,-16), new Point(-8,-13,-27))
-						.setEmission(new Color(100,40,10)),
+						.setEmission(new Color(100,40,10)).setMaterial(mateBirdOrgans),
 				new Triangle(new Point(5,9,-13), new Point(6,8,-16), new Point(-8,13,-27))
-						.setEmission(new Color(100,40,10)),
+						.setEmission(new Color(100,40,10)).setMaterial(mateBirdOrgans),
 				//wings of the bird
 				new Triangle(new Point(-7,-8,5), new Point(3.5,-9,6), new Point(18,-34,-5))
-						.setEmission(new Color(255,200,30)),
+						.setEmission(new Color(255,200,30)).setMaterial(mateBirdOrgans),
 				new Triangle(new Point(-5,12,5),new Point(3.5,13,6),new Point(18,30,-5))
-						.setEmission(new Color(255,200,30)),
+						.setEmission(new Color(255,200,30)).setMaterial(mateBirdOrgans),
 				//tail of the bird
 				new Polygon(new Point(12,-2,0), new Point(12,2,0), new Point(20,6,-4), new Point(20,-2,-4))
-						.setEmission(new Color(255,200,30)),
+						.setEmission(new Color(255,200,30)).setMaterial(mateBirdOrgans),
 				//the land (replace to tube, like a branch?) the water source, and the shore
 				new Plane(new Point(-8,-13,-25), new Point(-8,13,-25), new Point(1,1,-25))
-						.setEmission(new Color(140,50,40)),
+						.setEmission(new Color/*(140,50,40)*/(9,67,19)).setMaterial(new Material().setKd(0.6).setShininess(10)),
 				new Plane(new Point(-15,10,-25), new Point(-15,-10,-25), new Point(-35,0,-12))
-						.setEmission(new Color(0, 20, 255)).setMaterial(new Material().setKr(0.5)),
+						.setEmission(new Color(0, 20, 255)).setMaterial(new Material().setKr(0.5)),//.setKd(0.7).setKs(0.4).setShininess(20)),
 				new Tube(new Ray(new Point(-15,10,-25), new Vector(0,-250,0)), 2)
-						.setEmission(new Color(77,0,0)),
-				new Sphere(new Point(-35,0,-12), 2)
-						.setEmission(new Color(0,0,100)).setMaterial(new Material().setKt(0.5)));
+						.setEmission(new Color/*(77,0,0)*/(3,22,6)).setMaterial(new Material().setKd(0.6).setShininess(10)),
+				new Sphere(new Point(-35,0,-11), 2)
+						.setEmission(new Color(0,0,100)).setMaterial(new Material().setKt(0.5).setKs(0.5)));
 
+				//scene.geometries.add(new Triangle(new Point(-21,-3,8), new Point(-24,-1,3), new Point(-30,0,20)).setEmission(new Color(255,26,140)).setMaterial(new Material().setShininess(30).setKd(0.5).setKs(0.8)),
+				//new Sphere(new Point(-30,0,20), 2).setEmission(new Color(255,255,255)).setMaterial(new Material().setKt(0.7).setKd(0.3).setKs(0.3)));
 				/*new Sphere(new Point(0,0,100),100).setEmission(new Color(BLUE)),
 				new Polygon(new Point(500,-500,0), new Point(-500,-500,0),new Point(-500,500,0),new Point(500,500,0))
 						.setEmission(new Color(GRAY)).setMaterial(new Material().setKr(0.9)),
@@ -108,15 +123,18 @@ public class PR07Test {
 		for(int i=0  ;i<360 ; i++ ){
 			scene.lights.add(new DirectionalLight(new Color(123,255,0),new Point(Math.cos(i),Math.sin(i),Math.sin(i)).subtract(new Point(2,2,-3))));
 		}*/
-
-		scene.lights.add(new PointLight(new Color(255,255,255), new Point(0,0,100)).setKl(0.001).setKq(0.0001));
+		//scene.lights.add(new PointLight(new Color(255,255,255), new Point(-30,0,20)).setKq(0.00001).setKl(0.00001));
+		scene.lights.add(new PointLight(new Color(255,255,255), new Point(0,0,10)).setKl(0.00001).setKq(0.0001));
 		//scene.lights.add(new PointLight(new Color(800,500,250), new Point(-19,-9,4.5)).setKq(0.001));
-		//scene.lights.add(new SpotLight(new Color(800,500,250), new Point(-20,20,30), new Vector(22,-18,-35)).setKl(0.001).setKq(0.0001));
-		//scene.lights.add(new DirectionalLight(new Color(200, 200, 0), new Vector(22, -18, -35)));
-		ImageWriter imageWriter = new ImageWriter("PR07", 500, 500);
+		scene.lights.add(new SpotLight(new Color(800,500,250), new Point(-80,20,20), new Vector(82,-18,-25)).setKl(0.1).setKq(0.0001));
+		//scene.lights.add(new SpotLight(new Color(800,500,250), new Point(18,-34,0), new Vector(-12,28,-17)).setKl(0.1).setKq(0.0001));
+		scene.lights.add(new DirectionalLight(new Color(100, 150, 150), new Vector(22, -18, -35)));
+		//scene.lights.add(new DirectionalLight(new Color(100,150,150), new Vector(17,12,20)));
+
+		ImageWriter imageWriter = new ImageWriter("PR07 - move camera", 500, 500);
 		camera.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene)) //
-					.renderImage() //
+				.renderImage() //
 				.writeToImage();
 	}
 
