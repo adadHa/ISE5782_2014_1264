@@ -183,6 +183,7 @@ public class Camera {
         Color pixelColor;
         for (int i = 0; i < nX; i++){
             for (int j = 0; j < nY; j++){
+                System.out.println(i + "," + j);
                 if(AntiAliasingOn)
                     pixelColor = antiAliasing(nX,nY,j,i);
                 else{
