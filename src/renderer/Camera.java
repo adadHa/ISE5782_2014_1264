@@ -6,10 +6,12 @@ import primitives.Ray;
 import primitives.Vector;
 
 import java.util.MissingResourceException;
+import java.util.stream.IntStream;
 
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 import static primitives.Util.random;
+import static renderer.Pixel.*;
 
 public class Camera {
     private Point position;
@@ -31,6 +33,9 @@ public class Camera {
     private double apertureRadius = 0;
     private double focalDistance;
     private  double focalRaysAmount = 20;
+
+    // Multithreading
+    private boolean isMultithreadingOn = false;
 
     /**
      *
@@ -179,9 +184,31 @@ public class Camera {
             throw new MissingResourceException("Not all fields of camera were initiallized", "", "");
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
-        Ray ray;
-        Color pixelColor;
-        for (int i = 0; i < nX; i++){
+
+
+
+        if(isMultithreadingOn){
+            Pixel.initialize(nY, nX, getPrintInterval());
+            IntStream.range(0, nY).parallel().forEach(i -> {
+                IntStream.range(0, nX).parallel().forEach(j -> {
+                    Color pixelColor;
+                    Ray ray;
+                    if(AntiAliasingOn)
+                        pixelColor = antiAliasing(nX,nY,j,i);
+                    else{
+                        ray = constructRay(nX, nY, j, i);
+                        pixelColor = rayTracer.traceRay(ray);
+                    }
+                    Pixel.pixelDone();
+                    Pixel.printPixel();
+                    imageWriter.writePixel(j, i, pixelColor);
+                });
+            });
+        }
+        else{
+            Color pixelColor;
+            Ray ray;
+            for (int i = 0; i < nX; i++){
             for (int j = 0; j < nY; j++){
                 System.out.println(i + "," + j);
                 if(AntiAliasingOn)
@@ -193,6 +220,9 @@ public class Camera {
                 imageWriter.writePixel(j, i, pixelColor);
             }
         }
+        }
+
+
         return this;
     }
 
@@ -257,7 +287,7 @@ public class Camera {
      * @param interval the width/height of each square in the grid.
      * @param color
      */
-    public void printGrid(int interval, Color color) {
+    public Camera printGrid(int interval, Color color) {
         if(imageWriter == null)
             throw new MissingResourceException("ImageWriter is null","","");
         int nX = imageWriter.getNx();
@@ -274,6 +304,7 @@ public class Camera {
                 imageWriter.writePixel(j, i, color);
             }
         }
+        return this;
     }
 
     /**
@@ -450,5 +481,10 @@ public class Camera {
         if (xJ != 0) pIJCenter = pIJCenter.add(vRight.scale(xJ));
         if (yI != 0) pIJCenter = pIJCenter.add(vUp.scale(yI));
         return pIJCenter;
+    }
+
+    public Camera setMultithreadingOn(){
+        isMultithreadingOn = true;
+        return this;
     }
 }
