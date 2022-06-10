@@ -5,6 +5,7 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
 import java.util.MissingResourceException;
 
 import static primitives.Util.alignZero;
@@ -25,6 +26,7 @@ public class Camera {
 
     private boolean AntiAliasingOn;
     private int eyeRaysAmount = 9;
+    private int ADAPTIVE_MAX_DEPTH = 4;
 
     // Depth Of Field
     private boolean isDepthOfFieldOn = false;
@@ -240,6 +242,19 @@ public class Camera {
         Color avarageColor = sumColors.scale((double) 1/(eyeRaysAmount*eyeRaysAmount));
         return avarageColor;
     }
+
+    public List<Ray> f(Point a, Point b, Point c, Point d, Vector v1, Vector v2, int depth){
+        if(depth == ADAPTIVE_MAX_DEPTH)
+        {
+            return null;
+        }
+        else{
+
+        }
+    }
+
+
+
 
     /**
      * Turn on Anti Aliasing

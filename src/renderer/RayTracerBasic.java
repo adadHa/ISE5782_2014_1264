@@ -5,13 +5,12 @@ import primitives.*;
 
 import scene.Scene;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import geometries.Intersectable.GeoPoint;
 import lighting.LightSource;
 import static primitives.Util.*;
-
+import static renderer.MultiSampling.constructMultiSamplingRaysRandom;
 
 public class RayTracerBasic extends RayTracerBase {
 
@@ -51,7 +50,7 @@ private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
     Vector v = ray.getDir();
     if (!kr.equals(Double3.ZERO) && !kkr.lowerThan(MIN_CALC_COLOR_K)) {
         Ray reflectedRay = constructReflectedRay(gp, v, n);
-        List<Ray> reflectedRays = constructMultiSamplingRays(reflectedRay, glossyRaysAmount,
+        List<Ray> reflectedRays = constructMultiSamplingRaysRandom(reflectedRay, glossyRaysAmount,
                                                             distanceFromTargetArea, glossiness);
         color = color.add(calcAverageColor(reflectedRays,level-1,kkr).scale(kr));
         /*GeoPoint reflectedPoint = findClosestIntersection(reflectedRay);
@@ -63,7 +62,7 @@ private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
     Double3 kt = gp.geometry.getMaterial().kT, kkt = kt.product(k);
     if (!kt.equals(Double3.ZERO) && !kkt.lowerThan(MIN_CALC_COLOR_K)) {
         Ray refractedRay = constructRefractedRay(gp, v, n);
-        List<Ray> refractedRays = constructMultiSamplingRays(refractedRay, blurryRaysAmount,
+        List<Ray> refractedRays = constructMultiSamplingRaysRandom(refractedRay, blurryRaysAmount,
                                                             distanceFromTargetArea, blurriness);
         color = color.add(calcAverageColor(refractedRays,level-1,kkt).scale(kt));
         /*GeoPoint refractedPoint = findClosestIntersection(refractedRay);
@@ -264,53 +263,6 @@ private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
         return this;
     }
 
-    private List<Ray> constructMultiSamplingRays(Ray ray, double raysAmount, double distanceFromTargetArea, double targetAreaSize) {
-        ArrayList<Ray> resultList = new ArrayList<Ray>();
-        Ray rayThroughPixel;
-        /*Vector vectorToThePixel, v1 = ray.getDir().findPrependicular(),
-                v2 = v1.crossProduct(ray.getDir());
-        Point targetAreaCenter = ray.getPoint(distanceFromTargetArea);
-        Point point;
-        double targetSquareLength = targetAreaSize*2;
-        double interval = targetSquareLength/raysAmount;
-        resultList.add(ray);
-        if(raysAmount == 0 || isZero(targetAreaSize))
-            return resultList;
-        //grid
-        for (double z = 0; z < raysAmount; z++)
-        {
-            // move point each iteration to the left of the current row
-            // (the pixel is divided to grid of rows and columns
-            // [interval times rows and interval times columns])
-            if(!isZero(targetSquareLength/2 - (interval)*z))
-                point = targetAreaCenter.add(v1.scale(targetSquareLength/2 - (interval)*z));
-            else point = targetAreaCenter;
-            point = point.add(v2.scale(-targetSquareLength/2));
-            for (int q = 0; q < raysAmount; q++){
-                point = point.add(v2.scale(interval*targetSquareLength));
-                vectorToThePixel = point.subtract(ray.getP0());
-                rayThroughPixel = new Ray(ray.getP0(), vectorToThePixel);
-                resultList.add(rayThroughPixel);
-            }
-        }
-        return resultList;*/
-
-        Vector rotatedVector, v1 = ray.getDir().findPrependicular(),
-        v2 = v1.crossProduct(ray.getDir());
-        Point point, targetAreaCenter = ray.getPoint(distanceFromTargetArea);
-        resultList.add(ray);
-        if(raysAmount == 0)
-            return resultList;
-        double randomRadius,randomAngle; //-----------------------random points on circle
-        for(int i = 1; i < raysAmount; i++){
-            randomRadius = random(0.01,targetAreaSize);
-            randomAngle = random(0,360);
-            rotatedVector = v1.rotate(v2,randomAngle);
-            point = targetAreaCenter.add(rotatedVector.scale(randomRadius));
-            resultList.add(new Ray(ray.getP0(), point.subtract(ray.getP0())));
-        }
-        return resultList;
-    }
 
     /**
      * This method get a list of rays and return the average color of the intersection points of the rays
