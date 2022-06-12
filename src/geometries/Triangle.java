@@ -3,16 +3,33 @@ package geometries;
 import primitives.*;
 import java.util.List;
 
+/**
+ * this class represent a Triangle
+ */
 public class Triangle extends Polygon {
 
+    /**
+     * constructor for Triangle, gets three points
+     * @param a
+     * @param b
+     * @param c
+     */
     public Triangle(Point a, Point b, Point c) {
         super(a,b,c);
     }
 
+    /**
+     * getter for the vertices list of the triangle
+     * @return vertices of the Triangle
+     */
     public List<Point> getVertices(){
         return vertices;
     }
 
+    /**
+     * toString function to Triangle
+     * @return
+     */
     @Override
     public String toString() {
         String toReturn = "the Triangle: ";
@@ -25,6 +42,11 @@ public class Triangle extends Polygon {
         return toReturn;
     }
 
+    /**
+     * find an intersections between the given ray and the Triangle
+     * @param ray
+     * @return a list, in geoPoints, of the intersections between the given ray and between the Triangle, if there, else return null
+     */
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         List<Point> intersection = this.plane.findIntersections(ray);

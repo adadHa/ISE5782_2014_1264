@@ -86,11 +86,22 @@ public class Polygon extends Geometry {
         size = vertices.length;
     }
 
+    /**
+     *
+     * @param point
+     * @return a normal vector to the polygon in the point p, if there
+     */
     @Override
     public Vector getNormal(Point point) {
         return plane.getNormal();
     }
 
+    /**
+     * find intersections between the Polygon and the given ray
+     * @param ray
+     * @param maxDistance
+     * @return a list, in geoPoints, of the intersections between the given ray and the Polygon, if there, else return null
+     */
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         List<GeoPoint> intersection = this.plane.findGeoIntersections(ray,maxDistance);

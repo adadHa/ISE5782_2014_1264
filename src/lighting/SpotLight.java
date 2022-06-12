@@ -4,6 +4,9 @@ import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 
+/**
+ * this class represent a SpotLight, that have color, starting point, and a direction vector to the light
+ */
 public class SpotLight extends PointLight{
     private final Vector direction;
 
@@ -18,6 +21,11 @@ public class SpotLight extends PointLight{
         this.direction = direction.normalize();
     }
 
+    /**
+     * get the intensity of the SpotLight in the point p
+     * @param p
+     * @return intensity
+     */
     @Override
     public Color getIntensity(Point p) {
         Vector l = getL(p);
@@ -29,6 +37,11 @@ public class SpotLight extends PointLight{
             return intensity.scale(0);
     }
 
+    /**
+     * get the vector between the given point p and the point of the position of the SpotLight
+     * @param p
+     * @return vector(p-position of SpotLight)
+     */
     @Override
     public Vector getL(Point p) {
         return super.getL(p);

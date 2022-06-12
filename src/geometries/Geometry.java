@@ -1,8 +1,16 @@
 package geometries;
 import primitives.*;
 
+/**
+ * this abstract class represent any kind of geometry, all geometries extends it
+ */
 public abstract class Geometry extends Intersectable {
 
+    /**
+     * abstract method, every geometry implements it
+     * @param p
+     * @return a normal (perpendicular) vector to the geometry in point p, if there
+     */
     public abstract Vector getNormal(Point p);
 
     protected Color emission = Color.BLACK;

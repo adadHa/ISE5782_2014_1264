@@ -6,16 +6,29 @@ import geometries.Intersectable.GeoPoint;
 
 import static primitives.Util.isZero;
 
+/**
+ * this class represent a Ray in the space, made from starting point and direction vector (normalized)
+ */
 public class Ray {
     /**
      * a constant for moving shade rays' head.
      */
     private static  final double DELTA = 0.1;
 
-
+    /**
+     * starting point of the Ray
+     */
     final Point p0;
+    /**
+     * direction vector of the Ray (normalized)
+     */
     final Vector dir;
 
+    /**
+     * constructor for Ray
+     * @param p the starting Point
+     * @param v the direction vector
+     */
     public Ray(Point p, Vector v) {
         this.p0 = p;
         if(v.length() == 1)
@@ -37,13 +50,26 @@ public class Ray {
         this.p0 = head.add(delta);
     }
 
+    /**
+     * getter for the Dir (the direction vector of the Ray)
+     * @return
+     */
     public Vector getDir() {
         return dir;
     }
+
+    /**
+     * getter for p0 (the starting point of the Ray)
+     * @return
+     */
     public Point getP0() {
         return p0;
     }
 
+    /**
+     * toString function for Ray
+     * @return
+     */
     @Override
     public String toString() {
         return " the Ray: " +
@@ -52,6 +78,11 @@ public class Ray {
                 '.';
     }
 
+    /**
+     * this is equals function for Ray
+     * @param o
+     * @return if this equals o
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

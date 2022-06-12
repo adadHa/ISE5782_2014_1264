@@ -49,6 +49,11 @@ public class Double3 {
         this.d3 = value;
     }
 
+    /**
+     * this is equals function for Double3
+     * @param obj
+     * @return if this equals obj
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -60,11 +65,19 @@ public class Double3 {
         return false;
     }
 
+    /**
+     * this function give a hash code of the Double3 number, the sum of the three coordinates, rounded
+     * @return the coordinates sum, rounded, like a hash code
+     */
     @Override
     public int hashCode() {
         return (int) Math.round(d1 + d2 + d3);
     }
 
+    /**
+     * toString function for Double3
+     * @return
+     */
     @Override
     public String toString() {
         return "(" + d1 + "," + d2 + "," + d3 + ")";

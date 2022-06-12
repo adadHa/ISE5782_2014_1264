@@ -8,10 +8,19 @@ import java.util.List;
 
 import static primitives.Util.*;
 
+/**
+ * this class represents a Plane
+ */
 public class Plane extends Geometry {
     Point p0;
     Vector normal;
 
+    /**
+     * constructor for plane, get three points to initialize the plane, convert to a point and a vector
+     * @param p0
+     * @param p1
+     * @param p2
+     */
     public Plane(Point p0, Point p1, Point p2) {
         this.p0 = p0;
         // check for co-located vertices
@@ -27,6 +36,12 @@ public class Plane extends Geometry {
         // calc normal
         this.normal = v1.crossProduct(v2).normalize();
     }
+
+    /**
+     * constructor to plane, gets point and a normal vector to the plane
+     * @param p0
+     * @param normal
+     */
     public Plane(Point p0, Vector normal) {
         this.p0 = p0;
         if(normal.length() == 1){//todo: change to lengthSquared? (smaller run time without sqrt) here and ray
@@ -38,15 +53,27 @@ public class Plane extends Geometry {
     }
 
 
-
+    /**
+     * getter for p0
+     * @return the p0 of the plane (point on the plane)
+     */
     public Point getP0() {
         return p0;
     }
+
+    /**
+     * getter for normal
+     * @return the normal vector to the plane
+     */
     public Vector getNormal() {
         return normal;
     }
 
 
+    /**
+     * toSting function for plane
+     * @return
+     */
     @Override
     public String toString() {
         return " the Plane:" +
@@ -55,11 +82,22 @@ public class Plane extends Geometry {
                 '.';
     }
 
+    /**
+     *
+     * @param p
+     * @return a normal vector to the plane in the point p, if there
+     */
     @Override
     public Vector getNormal(Point p){
         return normal;
     }//todo: 1) there are no difference between 2 get normals.  2) we not use the point we get hear
 
+    /**
+     * find an intersection between the given ray and the plane
+     * @param ray
+     * @param maxDistance
+     * @return a list, in geoPoints, of the intersections of the plane and the given ray, if there, else return null
+     */
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         // point in the ray is (point = ray P0 + t * ray dir), now we try to find the t that will return point in our plane

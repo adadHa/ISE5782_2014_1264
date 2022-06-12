@@ -11,23 +11,44 @@ import java.util.List;
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
+/**
+ * this class represents a Tube (infinite cylinder)
+ */
 public class Tube extends Geometry {
     private final Ray axisRay;
     private final double radius;
 
+    /**
+     * constructor for Tube, gets the central ray and the radius
+     * @param axisRay
+     * @param radius
+     */
     public Tube(Ray axisRay, double radius) {
         this.axisRay = axisRay;
         this.radius = radius;
     }
 
+    /**
+     * getter for the AxisRay, the central ray
+     * @return axisRay of the tube
+     */
     public Ray getAxisRay() {
         return axisRay;
     }
 
+    /**
+     * getter for the Radius
+     * @return radius of tube
+     */
     public double getRadius() {
         return radius;
     }
 
+    /**
+     * return a normal vector to the tube in the point p, if there
+     * @param p
+     * @return
+     */
     @Override
     public Vector getNormal(Point p) {
         Vector v = axisRay.getDir();

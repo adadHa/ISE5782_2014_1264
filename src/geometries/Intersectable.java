@@ -5,9 +5,12 @@ import primitives.Ray;
 
 import java.util.List;
 
+/**
+ * abstract class, represented a geometry that can be intersectable with a ray, all geometries implements it
+ */
 public abstract class Intersectable {
     /**
-     * This method find intersecions points of an Intersectable shpae, with a given ray
+     * This method find intersecions points of an Intersectable shape, with a given ray
      * @param ray
      * @return list of intersections points
      */
@@ -35,6 +38,12 @@ public abstract class Intersectable {
         return findGeoIntersectionsHelper(ray, maxDistance);
     }
 
+    /**
+     * ansract function, every geometry implements it
+     * @param ray
+     * @param maxDistance
+     * @return
+     */
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance);
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
         return findGeoIntersectionsHelper(ray,Double.POSITIVE_INFINITY);
@@ -64,6 +73,11 @@ public abstract class Intersectable {
             this.point = point;
         }
 
+        /**
+         * this is equals function for intersectable
+         * @param o
+         * @return if this equals o
+         */
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -73,6 +87,10 @@ public abstract class Intersectable {
             return this.point.equals(other.point) && this.geometry.equals(other.geometry);
         }
 
+        /**
+         * toString function for intersectable
+         * @return
+         */
         @Override
         public String toString() {
             return "GeoPoint{" +

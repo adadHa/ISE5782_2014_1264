@@ -9,14 +9,28 @@ import java.util.List;
 
 import static primitives.Util.alignZero;
 
+/**
+ * this class represent a Cylinder
+ */
 public class Cylinder extends Tube{
     private final double height;
 
+    /**
+     * constructor to Cylinder
+     * @param axisRay central cylinder ray
+     * @param radius
+     * @param height
+     */
     public Cylinder(Ray axisRay, double radius, double height) {
         super(axisRay, radius);
         this.height = height;
     }
 
+    /**
+     *
+     * @param p
+     * @return normal vector to the cylinder, in point p, if there
+     */
     @Override
     public Vector getNormal(Point p) {
         // check whether p is on the base which contain p0
@@ -37,12 +51,23 @@ public class Cylinder extends Tube{
 
     }
 
+    /**
+     *
+     * @param ray
+     * @return
+     */
     @Override
     public List<Point> findIntersections(Ray ray) {
         return null;
     }
 
 
+    /**
+     *
+     * @param ray The ray that we check if it intersects the tube.
+     * @param maxDistance
+     * @return list of intersections of the ray with the cylinder, if there, else return null
+     */
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         List<GeoPoint> toReturn = new ArrayList<>();
