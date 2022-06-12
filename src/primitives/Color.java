@@ -9,6 +9,8 @@ package primitives;
  * @author Dan Zilberstein
  */
 public class Color {
+    private final double COLOR_EQ_CONSTANT = 0;
+
     /**
      * The internal fields tx`o maintain RGB components as double numbers from 0 to
      * whatever...
@@ -142,4 +144,18 @@ public class Color {
         return new Color(rgb.d1 / k.d1, rgb.d2 / k.d2, rgb.d3 / k.d3);
     }
 
+    /**
+     * This function check equality between two colors
+     * @param o
+     * @return
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if(o == null) return false;
+        if (!(o instanceof Color other)) return false;
+        return (this.rgb.d1 >= other.rgb.d1 - COLOR_EQ_CONSTANT && this.rgb.d1 <= other.rgb.d1 + COLOR_EQ_CONSTANT)
+                && (this.rgb.d2 >= other.rgb.d2 - COLOR_EQ_CONSTANT && this.rgb.d2 <= other.rgb.d2 + COLOR_EQ_CONSTANT)
+                && (this.rgb.d3 >= other.rgb.d3 - COLOR_EQ_CONSTANT && this.rgb.d3 <= other.rgb.d3 + COLOR_EQ_CONSTANT);
+    }
 }
