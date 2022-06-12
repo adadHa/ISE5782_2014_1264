@@ -254,9 +254,7 @@ public class Camera {
      * @return
      */
     private Color adaptiveAntiAliasing_(Point center, double squareSize, int depth){
-        double RECURSION_SCAL_FACTOR = 0.25;
         Color result = Color.BLACK;
-        int counter = 5; // counter of summed colors
         Point newCenter = null;
         ArrayList<Color> quartersColors = new ArrayList<Color>(); // each time we divide the square to four squares
         Point p1 = center.add(vUp.scale(0.5*squareSize)).add(vRight.scale(-0.5*squareSize));
@@ -287,30 +285,6 @@ public class Camera {
 
             return result.scale(0.25);
         }
-/*
-        if(!p1Color.equals(centerColor)){
-            newCenter = center.add(vRight.scale(-0.25*squareSize)).add(vUp.scale(0.25*squareSize));
-            result = result.add(adaptiveAntiAliasing_(newCenter,0.5*squareSize,depth - 1).scale(RECURSION_SCAL_FACTOR));
-            counter++;
-        }
-        if(!p2Color.equals(centerColor)){
-            newCenter = center.add(vRight.scale(0.25*squareSize)).add(vUp.scale(0.25*squareSize));
-            result = result.add(adaptiveAntiAliasing_(newCenter,0.5*squareSize,depth - 1).scale(RECURSION_SCAL_FACTOR));
-            counter++;
-        }
-        if(!p3Color.equals(centerColor)){
-            newCenter = center.add(vRight.scale(-0.25*squareSize)).add(vUp.scale(-0.25*squareSize));
-            result = result.add(adaptiveAntiAliasing_(newCenter,0.5*squareSize,depth - 1).scale(RECURSION_SCAL_FACTOR));
-            counter++;
-        }
-        if(!p4Color.equals(centerColor)){
-            newCenter = p4.add(vRight.scale(0.25*squareSize)).add(vUp.scale(-0.25*squareSize));
-            result = result.add(adaptiveAntiAliasing_(newCenter,0.5*squareSize,depth - 1).scale(RECURSION_SCAL_FACTOR));
-            counter++;
-        }
-        return result.scale((double) 1/counter);*/
-
-
     }
 
     /**

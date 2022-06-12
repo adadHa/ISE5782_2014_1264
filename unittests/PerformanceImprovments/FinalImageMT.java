@@ -12,11 +12,11 @@ import renderer.ImageWriter;
 import renderer.RayTracerBasic;
 import scene.Scene;
 
-public class FinalImage {
+public class FinalImageMT {
     private final Scene scene = new Scene("Final Project Scene").setBackground(new Color(120,140,255));
 
     @Test
-    void FinalProject() {
+    void FinalProjectMT() {
 
             //We see the bird from the front
             Camera camera = new Camera(new Point(-50,-50,0), new Vector(1,1,0), new Vector(0,0,1)) //
@@ -75,6 +75,7 @@ public class FinalImage {
                         .setEmission(new Color(3,22,6)).setMaterial(new Material().setKd(0.6).setShininess(10)),
                 new Sphere(new Point(-35,0,-11), 2)
                         .setEmission(new Color(0,0,100)).setMaterial(new Material().setKt(0.5).setKs(0.5)),
+                new Cylinder(new Ray(new Point(2,-7,-13), new Vector(0,0,1)), 5, 10).setMaterial(new Material().setKr(0.8).setKd(0.7).setKs(0.5)),
                 
                 
                 //clouds and a bird behind them
@@ -107,12 +108,12 @@ public class FinalImage {
         scene.lights.add(new DirectionalLight(new Color(100, 150, 150), new Vector(22, -18, -35)));
 
 
-        ImageWriter imageWriter = new ImageWriter("Final Image", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("Final Image - MultiThreading **", 500, 500);
         camera.setImageWriter(imageWriter) //
-                .setRayTracer(new RayTracerBasic(scene).setReflectionSuperSamplingOn(3)) //
-                .setAdaptiveSuperSamplingOn(2)
+                .setRayTracer(new RayTracerBasic(scene).setReflectionSuperSamplingOn(15)) //
+                .setAdaptiveSuperSamplingOn(4)
+                .setMultithreadingOn()//
                 .renderImage()
-                //.setMultithreadingOn()//
                 .writeToImage();
     }
 
